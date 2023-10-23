@@ -11,7 +11,7 @@ class Restaurant(BaseModel, Base):
     describes the restaurants table
     """
     __tablename__ = 'restaurants'
-    vendor_id = Column(String(60), ForeignKey('vendors.id'), nullable=False)
+    vendor_id = Column(String(60), ForeignKey('vendors.id'), nullable=False, unique=True)
     name = Column(String(60), nullable=False)
     address = Column(String(256), nullable=False)
     reviews = relationship("Review", backref="restaurant", cascade="all, delete, delete-orphan")

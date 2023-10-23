@@ -17,6 +17,4 @@ class Vendor(BaseModel, Base):
     phone_no = Column(String(60), nullable=False, unique=True)
     address = Column(String(256), nullable=False)
     email = Column(String(60), nullable=False, unique=True)
-    restaurants = relationship("Restaurant", backref="vendor", cascade="all, delete, delete-orphan")
-
-
+    restaurants = relationship('Restaurant', backref="vendor", uselist=False) 
