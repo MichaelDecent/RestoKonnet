@@ -16,3 +16,7 @@ class Restaurant(BaseModel, Base):
     address = Column(String(256), nullable=False)
     reviews = relationship("Review", backref="restaurant", cascade="all, delete, delete-orphan")
     items = relationship("Item", backref="restaurant", cascade="all, delete, delete-orphan")
+
+    def __init__(self, *args, **kwargs):
+        """initializes restaurant"""
+        super().__init__(*args, **kwargs)

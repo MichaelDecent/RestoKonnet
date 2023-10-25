@@ -18,3 +18,7 @@ class Customer(BaseModel, Base):
     email = Column(String(60), nullable=False, unique=True)
     reviews = relationship("Review", backref="customer")
 
+
+    def __init__(self, *args, **kwargs):
+        """initializes customer"""
+        super().__init__(*args, **kwargs)

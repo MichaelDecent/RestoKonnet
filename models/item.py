@@ -15,3 +15,7 @@ class Item(BaseModel, Base):
     name = Column(String(60), nullable=False)
     price = Column(Integer, nullable=False)
     
+
+    def __init__(self, *args, **kwargs):
+        """initializes item"""
+        super().__init__(*args, **kwargs)
