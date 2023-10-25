@@ -10,7 +10,7 @@ from models.restaurant import Restaurant
 from api.v1.errors import error_response, bad_request, not_found
 
 
-@app_views.route('/restaurants', methods['GET'], strict_slashes=False)
+@app_views.route('/restaurants', methods=['GET'], strict_slashes=False)
 def get_restaurants():
     """This retrieves a list all restaurants"""
 
@@ -26,6 +26,18 @@ def get_restaurant(restaurant_id):
         return not_found("restaurant does not exist")
     return jsonify(restaurant.to_dict())
 
+@app_views.route('/vendors/<vendor_id>/restaurants', methods=['GET'], strict_slashes=False)
+def get_vendor_restaurant(vendor_id):
+    """This retrieves a restaurant based on its id"""
+
+    vendor = storage.get(Vendor, vendor_id)
+    if not vendor:
+        return not_found("vendor does not exist")
+
+    restaurant = vendor.restaurants
+    return jsonify(restaurant.to_dict())
+
+
 @app_views.route('/vendors/<vendor_id>/restaurants', methods=['POST'], strict_slashes=False)
 def post_restaurant(vendor_id):
     """ This creates a new restaurant object """
@@ -35,7 +47,7 @@ def post_restaurant(vendor_id):
         return not_found("vendor does not exist")
     
     if vendor.restaurants is not None:
-        return error_response("Vendor Already created Restaurant")
+        return bad_request("Vendor Already created Restaurant")
 
     json_request = request.get_json()
     if not json_request:
@@ -50,7 +62,7 @@ def post_restaurant(vendor_id):
         if json_request['name'] == rest.name:
             bad_request("Name Already Exist")
     
-    restaurant = Restaurant(**json_request)
+    restaurant = Restaurant(vendor_id=vendor_id, **json_request)
     restaurant.save()
 
     return make_response(jsonify(restaurant.to_dict()), 201)
@@ -60,8 +72,8 @@ def put_restaurant(restaurant_id):
     """Updates a particular restaurant's attributes"""
 
     restaurant = storage.get(Restaurant, restaurant_id)
-        if not restaurant:
-            return not_found("restaurant does not exist")
+    if not restaurant:
+        return not_found("restaurant does not exist")
 
     json_request = request.get_json()
     if not json_request:
@@ -80,9 +92,9 @@ def put_restaurant(restaurant_id):
 def delete_restaurant(restaurant_id):
     """Deletes a paticular restaurant object """
 
-     restaurant = storage.get(Restaurant, restaurant_id)
-        if not restaurant:
-            return not_found()
+    restaurant = storage.get(Restaurant, restaurant_id)
+    if not restaurant:
+        return not_found()
     
     storage.delete(restaurant)
     storage.save()
