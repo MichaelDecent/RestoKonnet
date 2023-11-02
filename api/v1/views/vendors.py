@@ -15,18 +15,18 @@ from werkzeug.security import check_password_hash
 def vendor_login():
     """ This returns a token for an authenticated vendor """
 
-    json_request = request.get_json()
+    form_request = request.form
 
-    if not json_request:
+    if not form_request:
         return bad_request("Not a JSON")
-    if 'email' not in json_request:
+    if 'email' not in form_request:
         return bad_request("Missing Email")
 
-    if 'password' not in json_request:
+    if 'password' not in form_request:
         return bad_request("Missing Password")
 
     for vendor in storage.all(Vendor).values():
-        if vendor.email == json_request['email'] and check_password_hash(vendor.password, json_request['password']):
+        if vendor.email == form_request['email'] and check_password_hash(vendor.password, form_request['password']):
             expires = timedelta(seconds=3600)
             access_token = create_access_token(identity=vendor.email, expires_delta=expires)
             return make_response(jsonify({'access_token': access_token}), 200)
@@ -57,24 +57,24 @@ def get_vendor(vendor_id):
 def post_vendor():
     """This creates a new vendor object"""
 
-    json_request = request.get_json()
+    form_request = request.form
 
-    if not json_request:
-        return bad_request("Not JSON")
+    if not form_request:
+        return bad_request("Not form-data")
     
     required = ['first_name', 'last_name', 'address', 'email', 'password', 'phone_no']
     for val in required:
-        if val not in json_request:
+        if val not in form_request:
             return bad_request(f"Missing {val}")
 
 
     for ven in storage.all(Vendor).values():
-        if json_request['email'] == ven.email:
+        if form_request['email'] == ven.email:
             return bad_request("Email Already Exist")
-        if json_request['password'] == ven.password:
+        if form_request['password'] == ven.password:
             return bad_request("Phone Already Exist")
 
-    vendor = Vendor(**json_request)
+    vendor = Vendor(**form_request)
     vendor.save()
     return make_response(jsonify(vendor.to_dict()), 200)
 
@@ -85,12 +85,12 @@ def put_vendor(vendor_id):
     vendor = storage.get(Vendor, vendor_id)
     if not vendor:
         return not_found()
-    json_request = request.get_json()
-    if not json_request:
-        return bad_request("Not JSON")
+    form_request = request.form
+    if not form_request:
+        return bad_request("Not form-data")
     ignore_list = ['id', 'updated_at', 'created_at']
 
-    for key, value in json_request.items():
+    for key, value in form_request.items():
         if key not in ignore_list:
             setattr(vendor, key, value)
 

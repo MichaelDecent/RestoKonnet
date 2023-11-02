@@ -49,20 +49,24 @@ def post_restaurant(vendor_id):
     if vendor.restaurants is not None:
         return bad_request("Vendor Already created Restaurant")
 
-    json_request = request.get_json()
-    if not json_request:
-        bad_request("Not a JSON")
+    form_request = request.form
+    if not form_request:
+        bad_request("Not a form data")
 
     required = ['name', 'address']
     for val in required:
-        if val not in json_request:
+        if val not in form_request:
             return bad_request(f"Missing {val}")
 
     for rest in storage.all(Restaurant).values():
-        if json_request['name'] == rest.name:
+        if form_request['name'] == rest.name:
             bad_request("Name Already Exist")
-    
-    restaurant = Restaurant(vendor_id=vendor_id, **json_request)
+
+    if request.files['image']:
+        image_path = request.files['image']
+        result = upload(image_path)
+
+    restaurant = Restaurant(vendor_id=vendor_id, name=form_request['name'], address=form_request['name'], image=result['url'])
     restaurant.save()
 
     return make_response(jsonify(restaurant.to_dict()), 201)
@@ -75,14 +79,32 @@ def put_restaurant(restaurant_id):
     if not restaurant:
         return not_found("restaurant does not exist")
 
-    json_request = request.get_json()
-    if not json_request:
-        return bad_request("Not JSON")
+    form_request = request.form
+    if not form_request:
+        return bad_request("Not form-data")
     ignore_list = ['id', 'updated_at', 'created_at']
 
-    for key, value in json_request.items():
+    for key, value in form_request.items():
         if key not in ignore_list:
             setattr(restaurant, key, value)
+
+    storage.save()
+    return make_response(jsonify(restaurant.to_dict()), 201)
+
+@app_views.route('/restaurants/<restaurant_id>/image', methods=['PUT'], strict_slashes=False)
+def put_restaurant_image(restaurant_id):
+    """Updates a particular restaurant's image"""
+
+    restaurant = storage.get(Restaurant, restaurant_id)
+    if not restaurant:
+        return not_found("Restaurant does not exist")
+
+    if 'image' not in request.files:
+        return bad_request('No image provided')
+
+    image_path = request.files['image']
+    result = upload(image_path)
+    setattr(restaurant, 'image', result['url'])
 
     storage.save()
     return make_response(jsonify(restaurant.to_dict()), 201)

@@ -38,19 +38,19 @@ def post_review(restaurant_id):
     if not restaurant:
         return not_found("restaurant does not exist")
     
-    json_request = request.get_json()
-    if not json_request:
+    form_request = request.form
+    if not form_request:
         bad_request("Not a JSON")
 
     required = ['text', 'customer_id']
     for val in required:
-        if val not in json_request:
+        if val not in form_request:
             return bad_request(f"Missing {val}")
 
-    if not storage.get(Customer, json_request['customer_id']):
+    if not storage.get(Customer, form_request['customer_id']):
         return not_found("customer does not exist")
 
-    review = Review(restaurant_id=restaurant_id, **json_request)
+    review = Review(restaurant_id=restaurant_id, **form_request)
     review.save()
 
     return make_response(jsonify(review.to_dict()), 201)
@@ -64,12 +64,12 @@ def put_review(review_id):
     if not review:
         return not_found("review does not exist")
 
-    json_request = request.get_json()
-    if not json_request:
-        return bad_request("Not JSON")
+    form_request = request.form
+    if not form_request:
+        return bad_request("Not form-data")
     ignore_list = ['id', 'updated_at', 'created_at']
 
-    for key, value in json_request.items():
+    for key, value in form_request.items():
         if key not in ignore_list:
             setattr(review, key, value)
 

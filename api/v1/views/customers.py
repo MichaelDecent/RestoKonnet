@@ -15,15 +15,15 @@ from api.v1.errors import error_response, bad_request, not_found
 def customer_login():
     """ This returns a token for an authenticated customer """
 
-    json_request = request.get_json()
+    form_request = request.form
 
-    if not json_request:
+    if not form_request:
         return bad_request("Not a JSON")
-    if 'phone_no' not in json_request:
+    if 'phone_no' not in form_request:
         return bad_request("Missing Phone Number")
     
     for customer in storage.all(Customer).values():
-        if customer.phone_no == json_request['phone_no']:
+        if customer.phone_no == form_request['phone_no']:
             expires = timedelta(seconds=3600)
             access_token = create_access_token(identity=customer.phone_no, expires_delta=expires)
             return make_response(jsonify({'access_token': access_token}), 200)
@@ -54,23 +54,23 @@ def get_customer(customer_id):
 def post_customer():
     """This creates a new customer object"""
 
-    json_request = request.get_json()
+    form_request = request.form
 
-    if not json_request:
-        return bad_request("Not JSON")
+    if not form_request:
+        return bad_request("Not form-data")
 
     required = ['name', 'phone_no', 'address', 'email']
     for val in required:
-        if val not in json_request:
+        if val not in form_request:
             return bad_request(f"Missing {val}")
 
     for cust in storage.all(Customer).values():
-        if json_request['email'] == cust.email:
+        if form_request['email'] == cust.email:
             return bad_request("Email Already Exist")
-        if json_request['phone_no'] == cust.phone_no:
+        if form_request['phone_no'] == cust.phone_no:
             return bad_request("Phone Already Exist")
 
-    customer = Customer(**json_request)
+    customer = Customer(**form_request)
     customer.save()
     return make_response(jsonify(customer.to_dict()), 201)
     
@@ -83,12 +83,12 @@ def put_customer(customer_id):
     customer = storage.get(Customer, customer_id)
     if not customer:
         return not_found()
-    json_request = request.get_json()
-    if not json_request:
-        return bad_request("Not JSON")
+    form_request = request.form
+    if not form_request:
+        return bad_request("Not form-data")
     ignore_list = ['id', 'updated_at', 'created_at']
 
-    for key, value in json_request.items():
+    for key, value in form_request.items():
         if key not in ignore_list:
             setattr(customer, key, value)
 

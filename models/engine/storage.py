@@ -13,6 +13,9 @@ from models.vendor import Vendor
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+import cloudinary
+from cloudinary.uploader import upload
+
 
 classes = {"Customer": Customer, "Item": Item, "Restaurant": Restaurant, "Review": Review, "Vendor": Vendor}
 
@@ -27,11 +30,17 @@ class DBStorage:
         RESTO_MYSQL_PWD = getenv('RESTO_MYSQL_PWD', 'root')
         RESTO_MYSQL_HOST = getenv('RESTO_MYSQL_HOST', 'localhost')
         RESTO_MYSQL_DB = getenv('RESTO_MYSQL_DB', 'restokonnect_db')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(RESTO_MYSQL_USER,
-                                             RESTO_MYSQL_PWD,
-                                             RESTO_MYSQL_HOST,
-                                             RESTO_MYSQL_DB))
+        self.__engine = create_engine('postgres://gtpfaitpogkicu:6b3bc09e6de0de49f7e2d41c039028ec754066f4c13eade81e64a5eaf348a457@ec2-3-230-24-12.compute-1.amazonaws.com:5432/dae6ljt7sfejr2')
+        
+        CLOUDINARY_CLOUD_NAME = "dt7ye9bd7"
+        CLOUDINARY_API_KEY = "129194638594757"
+        CLOUDINARY_API_SECRET = "RInU3arzIDm4IpANg0P1PS_z5bw"
+
+        cloudinary.config(
+            cloud_name=CLOUDINARY_CLOUD_NAME,
+            api_key=CLOUDINARY_API_KEY,
+            api_secret=CLOUDINARY_API_SECRET
+        )
     
     def all(self, cls=None):
         """query on the current database session"""

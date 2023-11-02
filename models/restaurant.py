@@ -14,8 +14,10 @@ class Restaurant(BaseModel, Base):
     vendor_id = Column(String(60), ForeignKey('vendors.id'), nullable=False, unique=True)
     name = Column(String(60), nullable=False)
     address = Column(String(256), nullable=False)
+    image = Column(String(256), nullable=True)
     reviews = relationship("Review", backref="restaurant", cascade="all, delete, delete-orphan")
     items = relationship("Item", backref="restaurant", cascade="all, delete, delete-orphan")
+
 
     def __init__(self, *args, **kwargs):
         """initializes restaurant"""
