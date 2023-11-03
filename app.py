@@ -19,7 +19,4 @@ def close_db(error):
     """ Close Storage """
     storage.close()
 
-host = getenv('RESTOKONNECT_API_HOST', '0.0.0.0')
-port = getenv('RESTOKONNECT_API_PORT', '5001')
-
-app.run(host=host, port=port, threaded=True)
+app.run(threaded=True)
