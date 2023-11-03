@@ -19,4 +19,4 @@ def close_db(error):
     """ Close Storage """
     storage.close()
 
-app.run(threaded=True)
+app.run(port='5002', threaded=True)
