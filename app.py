@@ -18,5 +18,6 @@ jwt = JWTManager(app)
 def close_db(error):
     """ Close Storage """
     storage.close()
-print("running")
-app.run(port='5002', threaded=True)
+
+if __name__ == ('__main__'):
+    app.run(threaded=True)
