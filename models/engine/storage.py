@@ -33,9 +33,9 @@ class DBStorage:
         RESTO_POSTGRES_DB = getenv('RESTO_POSTGRES_DB')
         self.__engine = create_engine(RESTO_POSTGRES_DB)
         
-        CLOUDINARY_CLOUD_NAME = "dt7ye9bd7"
-        CLOUDINARY_API_KEY = "129194638594757"
-        CLOUDINARY_API_SECRET = "RInU3arzIDm4IpANg0P1PS_z5bw"
+        CLOUDINARY_CLOUD_NAME = getenv('CLOUDINARY_CLOUD_NAME')
+        CLOUDINARY_API_KEY = getenv('CLOUDINARY_API_KEY')
+        CLOUDINARY_API_SECRET = getenv('CLOUDINARY_API_SECRET')
 
         cloudinary.config(
             cloud_name=CLOUDINARY_CLOUD_NAME,
