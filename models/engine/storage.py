@@ -26,11 +26,12 @@ class DBStorage:
     
     def __init__(self):
         """Instantiate a DBStorage object"""
-        RESTO_MYSQL_USER = getenv('RESTO_MYSQL_USER', 'root')
-        RESTO_MYSQL_PWD = getenv('RESTO_MYSQL_PWD', 'root')
-        RESTO_MYSQL_HOST = getenv('RESTO_MYSQL_HOST', 'localhost')
-        RESTO_MYSQL_DB = getenv('RESTO_MYSQL_DB', 'restokonnect_db')
-        self.__engine = create_engine('postgresql://gtpfaitpogkicu:6b3bc09e6de0de49f7e2d41c039028ec754066f4c13eade81e64a5eaf348a457@ec2-3-230-24-12.compute-1.amazonaws.com:5432/dae6ljt7sfejr2')
+        #RESTO_MYSQL_USER = getenv('RESTO_MYSQL_USER', 'root')
+        #RESTO_MYSQL_PWD = getenv('RESTO_MYSQL_PWD', 'root')
+        #RESTO_MYSQL_HOST = getenv('RESTO_MYSQL_HOST', 'localhost')
+        #RESTO_MYSQL_DB = getenv('RESTO_MYSQL_DB', 'restokonnect_db')
+        RESTO_POSTGRES_DB = getenv('RESTO_POSTGRES_DB')
+        self.__engine = create_engine(RESTO_POSTGRES_DB)
         
         CLOUDINARY_CLOUD_NAME = "dt7ye9bd7"
         CLOUDINARY_API_KEY = "129194638594757"
