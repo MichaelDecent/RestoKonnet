@@ -35,7 +35,7 @@ def get_vendor_restaurant(vendor_id):
     if not vendor:
         return not_found("vendor does not exist")
 
-    restaurant = [rest.to_dict() for rest in vendor.restaurants]
+    restaurant = vendor.restaurants
     return jsonify(restaurant)
 
 
