@@ -66,7 +66,7 @@ def post_restaurant(vendor_id):
         image_path = request.files['image']
         result = upload(image_path)
 
-    restaurant = Restaurant(vendor_id=vendor_id, name=form_request['name'], address=form_request['name'], image=result['url'])
+    restaurant = Restaurant(vendor_id=vendor_id, name=form_request['name'], address=form_request['address'], image=result['url'])
     restaurant.save()
 
     return make_response(jsonify(restaurant.to_dict()), 201)
