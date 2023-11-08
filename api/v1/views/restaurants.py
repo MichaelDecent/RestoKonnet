@@ -35,8 +35,8 @@ def get_vendor_restaurant(vendor_id):
     if not vendor:
         return not_found("vendor does not exist")
 
-    restaurant = vendor.restaurants
-    return jsonify(restaurant.to_dict())
+    restaurant = [rest.to_dict() for rest in vendor.restaurants]
+    return jsonify(restaurant)
 
 
 @app_views.route('/vendors/<vendor_id>/restaurants', methods=['POST'], strict_slashes=False)
