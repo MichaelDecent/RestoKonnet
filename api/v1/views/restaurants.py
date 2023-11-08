@@ -8,6 +8,7 @@ from models import storage
 from models.vendor import Vendor
 from models.restaurant import Restaurant
 from api.v1.errors import error_response, bad_request, not_found
+from cloudinary.uploader import upload
 
 
 @app_views.route('/restaurants', methods=['GET'], strict_slashes=False)
