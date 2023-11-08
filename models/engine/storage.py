@@ -15,6 +15,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 import cloudinary
 from cloudinary.uploader import upload
+from dotenv import load_dotenv
 
 
 classes = {"Customer": Customer, "Item": Item, "Restaurant": Restaurant, "Review": Review, "Vendor": Vendor}
@@ -30,6 +31,7 @@ class DBStorage:
         #RESTO_MYSQL_PWD = getenv('RESTO_MYSQL_PWD', 'root')
         #RESTO_MYSQL_HOST = getenv('RESTO_MYSQL_HOST', 'localhost')
         #RESTO_MYSQL_DB = getenv('RESTO_MYSQL_DB', 'restokonnect_db')
+        load_dotenv()
         RESTO_POSTGRES_DB = getenv('RESTO_POSTGRES_DB')
         self.__engine = create_engine(RESTO_POSTGRES_DB)
         
