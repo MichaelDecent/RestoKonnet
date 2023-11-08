@@ -21,6 +21,7 @@ packaging==23.2
 protobuf==4.21.12
 psycopg2-binary==2.9.9
 PyJWT==2.8.0
+python-dotenv==1.0.0
 six==1.16.0
 SQLAlchemy==2.0.22
 typing-extensions==4.8.0
