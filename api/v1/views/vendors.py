@@ -29,7 +29,7 @@ def vendor_login():
         if vendor.email == form_request['email'] and check_password_hash(vendor.password, form_request['password']):
             expires = timedelta(seconds=3600)
             access_token = create_access_token(identity=vendor.email, expires_delta=expires)
-            return make_response(jsonify({'access_token': access_token}), 200)
+            return make_response(jsonify({'access_token': access_token, 'id': vendor.id}), 200)
 
     return bad_request("Invalid credentials")
 
