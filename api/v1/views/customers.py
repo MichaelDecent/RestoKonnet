@@ -26,7 +26,7 @@ def customer_login():
         if customer.phone_no == form_request['phone_no']:
             expires = timedelta(seconds=3600)
             access_token = create_access_token(identity=customer.phone_no, expires_delta=expires)
-            return make_response(jsonify({'access_token': access_token}, 'id': customer.id), 200)
+            return make_response(jsonify({'access_token': access_token, 'id': customer.id}), 200)
 
     return bad_request("Invalid credentials")
 
