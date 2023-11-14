@@ -74,7 +74,7 @@
                 <Restaurant/>
             </div>
         </div>
-        <div class="bg-rgreen-100 p-40">
+        <div class="bg-rgreen-100 p-32">
             <Footer2/>
         </div>
     </section>
