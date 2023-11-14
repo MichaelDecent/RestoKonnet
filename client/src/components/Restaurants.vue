@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="flex justify-end mr-20 mb-5">
+    <div class="flex justify-end mr-20 mb-10">
         <button class="bg-rgreen-100 hover:text-ryellow text-white font-semibold p-2 rounded transform hover:scale-105 transition-transform duration-300 ease-in-out mt-5" >View More</button>
     </div>
 </template>

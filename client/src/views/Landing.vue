@@ -103,7 +103,7 @@
     </section>
     <section class="bg-rgreen-100">
         <div class="flex justify-center pt-8 px-2 flex-wrap items-center">
-            <h2 class="text-white break-words md:text-4xl font-bold text-sm">Register to become one of restoconnect team </h2>
+            <h2 class="text-white break-words md:text-4xl font-bold text-sm">Register to become one of RestoKonnect Team </h2>
         </div>
         <div class="flex justify-around p-2 gap-2">
             <div class="transform hover:scale-105 transition-transform duration-300 ease-in-out">
