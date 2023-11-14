@@ -1,6 +1,6 @@
 <script setup>
     import Logo from "../components/Logo.vue"
-    import Restaurant from "../components/Restaurants.vue"
+    import Restaurants from "../components/Restaurants.vue"
     import Footer from "../components/Footer.vue";
 </script>
 
@@ -54,7 +54,7 @@
     </div>
     <div class="bg-rgreen-100 mt-3">
         <h2 class="text-white text-2xl lg:text-4xl font-poppins font-semibold break-words lg:ml-10 pt-5">Explore Restaurants</h2>
-        <Restaurant/>
+        <Restaurants/>
     </div>
     <section class="flex flex-wrap pb-5 gap-3 justify-center">
         <div class="text-rgreen-100 lg:text-4xl font-bold font-helvetica break-words my-6">
