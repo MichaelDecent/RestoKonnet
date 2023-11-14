@@ -39,8 +39,8 @@ Thank you for considering our Multi-Vendor Food Website project! Let's work toge
 
 ## License
 
-Specify the license under which your app is distributed. Common licenses include MIT, Apache, or GPL.
-
+[MIT
+](https://github.com/MichaelDecent/RestoKonnect/blob/main/LICENSE)
 ## Contact
 
 Include contact information for the maintainers of the project. This could be an email address, a link to a GitHub profile, or other relevant contact information.
