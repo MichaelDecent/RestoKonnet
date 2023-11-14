@@ -39,7 +39,7 @@ Thank you for considering our Multi-Vendor Food Website project! Let's work toge
 
 ## License
 
-This project is licensed under the [MIT LICENSE](https://github.com/MichaelDecent/RestoKonnect/blob/main/LICENSE)
+This project is licensed under the [MIT License](https://github.com/MichaelDecent/RestoKonnect/blob/main/LICENSE)
 
 ## Contact
 
