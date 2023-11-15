@@ -17,6 +17,7 @@ class Restaurant(BaseModel, Base):
     image = Column(String(256), nullable=True)
     reviews = relationship("Review", backref="restaurant", cascade="all, delete, delete-orphan")
     items = relationship("Item", backref="restaurant", cascade="all, delete, delete-orphan")
+    orders = relationship("Order", backref="restaurant", cascade="all, delete, delete-orphan")
 
 
     def __init__(self, *args, **kwargs):
