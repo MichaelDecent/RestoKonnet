@@ -20,4 +20,3 @@ class Order(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """initializes review"""
         super().__init__(*args, **kwargs)
-
