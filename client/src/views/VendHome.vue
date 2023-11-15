@@ -36,8 +36,8 @@
 
 <template>
     <section class="">
-        <div class="bg-rgreen-100 p-10">
-            <div class="flex justify-between items-center">
+        <div class="bg-rgreen-100 p-5 pt-10">
+            <div class="flex justify-between items-center mx-10">
                 <div>
                     <Logo2/>
                 </div>
@@ -69,7 +69,7 @@
             </div>     
         </div>
         <div class="container2">
-            <h2 class="text-rgreen-100 text-2xl lg:text-4xl font-poppins font-semibold break-words lg:ml-10 mt-5">Explore Restaurants</h2>
+            <h2 class="text-rgreen-100 text-2xl lg:text-4xl font-poppins font-semibold break-words lg:ml-1 mt-5">Explore Restaurants</h2>
             <div class="mx-10 rounded-lg mt-5">
                 <Restaurant/>
             </div>

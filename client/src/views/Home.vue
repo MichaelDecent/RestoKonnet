@@ -33,7 +33,7 @@
 
 <template>
     <section class="">
-        <div class="bg-rgreen-100 p-10">
+        <div class="bg-rgreen-100 p-5 pt-10">
             <RestoNav/>
             <div class="my-24">
                 <div class="flex justify-center mb-5">
@@ -50,7 +50,7 @@
             </div>     
         </div>
         <div class="container2">
-            <h2 class="text-rgreen-100 text-2xl lg:text-4xl font-poppins font-semibold break-words lg:ml-10 mt-5">Explore Restaurants</h2>
+            <h2 class="text-rgreen-100 text-2xl lg:text-4xl font-poppins font-semibold break-words lg:ml-16 mt-5">Explore Restaurants</h2>
             <div class="mx-10 rounded-lg mt-5">
                 <Restaurants/>
             </div>

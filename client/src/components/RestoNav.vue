@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center mx-10">
         <div>
             <Logo2/>
         </div>
