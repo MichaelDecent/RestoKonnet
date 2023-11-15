@@ -52,7 +52,7 @@ def post_order(restaurant_id):
     if not form_request:
         bad_request("Not a JSON")
 
-    required = ['text', 'customer_id']
+    required = ['item_name', 'item_price', 'customer_id']
     for val in required:
         if val not in form_request:
             return bad_request(f"Missing {val}")
