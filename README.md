@@ -52,7 +52,7 @@ The technology stack and architecture employed in the development of this multiv
 
   The app's Back-End services were hosted on Heroku, a cloud platform that facilitated seamless deployment and ensured reliable hosting for the application.
 
-  This tech stack and architecture amalgamated the strengths of Vue.js for the dynamic and responsive Front-End, Flask for constructing a powerful Back-End API, and the optimal database management system transition from Mysql to Postgres to meet production-grade demands. Hosting on Heroku contributed to the app's scalability and stability during deployment.
+This tech stack and architecture amalgamated the strengths of Vue.js for the dynamic and responsive Front-End, Flask for constructing a powerful Back-End API, and the optimal database management system transition from Mysql to Postgres to meet production-grade demands. Hosting on Heroku contributed to the app's scalability and stability during deployment.
 
 ## Contributing
 
