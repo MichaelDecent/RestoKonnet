@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-contains class Review
+contains class Order
 """
 from models.base_model import Base, BaseModel
 from sqlalchemy import Column, String, Integer, ForeignKey
@@ -18,5 +18,5 @@ class Order(BaseModel, Base):
 
 
     def __init__(self, *args, **kwargs):
-        """initializes review"""
+        """initializes orders"""
         super().__init__(*args, **kwargs)
