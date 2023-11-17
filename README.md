@@ -12,9 +12,13 @@ This project is dedicated to empowering local food vendors who might not have th
 ## Table of Contents
 - [Purpose](#purpose)
 - [Features](#features)
+- [Tech Stack](#tech-stack)
+  - [Front-End](#front-end)
+  - [Back-End](#back-end)
+  - [Hosting and Deployment](#hosting-and-deployment)
 - [Contributing](#contributing)
 - [License](#license)
-- [Contact](#contact)
+- [Authors](#authors)
 
 ## Purpose
 The primary objective of this website is to bridge the gap between local food vendors and their remote customers by offering an accessible and user-friendly platform. By leveraging this website, vendors can effectively present their unique cuisines, enabling customers to explore menus, place orders, and enjoy delightful meals from their favorite local spots.
@@ -30,7 +34,26 @@ The features of RestoKonnect include:
 - Order management
 - Payment processing
 - Ratings and reviews
-  
+
+## Tech Stack
+![Screenshot from 2023-11-15 20-15-36](https://github.com/MichaelDecent/RestoKonnect/assets/111002205/cd0647d8-22fc-4853-b529-1a34baca9a63)
+
+The technology stack and architecture employed in the development of this multivendor food app are as follows:
+
+* ### Front-End:
+
+  For the Front-End, Vue.js, a progressive JavaScript framework, was utilized as the primary framework. Vue.js was coupled with HTML for structuring the web pages and Tailwind CSS for styling and design.
+
+* ### Back-End:
+
+  The Back-End infrastructure relied on the Flask Python framework to construct a robust and scalable Restful API. Initially, during the development phase, Mysql was chosen as the primary database management system. However, for production-ready deployment, the database transitioned to Postgres due to its enhanced capabilities and performance benefits.
+
+* ### Hosting and Deployment:
+
+  The app's Back-End services were hosted on Heroku, a cloud platform that facilitated seamless deployment and ensured reliable hosting for the application.
+
+This tech stack and architecture amalgamated the strengths of Vue.js for the dynamic and responsive Front-End, Flask for constructing a powerful Back-End API, and the optimal database management system transition from Mysql to Postgres to meet production-grade demands. Hosting on Heroku contributed to the app's scalability and stability during deployment.
+
 ## Contributing
 
 We welcome contributions from developers passionate about enhancing the local food industry and creating a positive impact. Feel free to dive into the codebase, suggest improvements, or report issues through pull requests and discussions.
@@ -41,6 +64,6 @@ Thank you for considering our Multi-Vendor Food Website project! Let's work toge
 
 This project is licensed under the [MIT License](https://github.com/MichaelDecent/RestoKonnect/blob/main/LICENSE)
 
-## Contact
-
-Include contact information for the maintainers of the project. This could be an email address, a link to a GitHub profile, or other relevant contact information.
+## Authors
+- **Michael Nwogha** <[MichaelDecent](https://github.com/MichaelDecent)>
+- **Belema Olisa** <[OlisaBelema](https://github.com/Olisabelema)>
