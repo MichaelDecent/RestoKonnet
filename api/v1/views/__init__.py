@@ -11,3 +11,4 @@ from api.v1.views.restaurants import *
 from api.v1.views.items import *
 from api.v1.views.reviews import *
 from api.v1.views.orders import *
+from api.v1.views.cart_items import *

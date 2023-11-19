@@ -29,15 +29,15 @@ def get_restaurant_order(restaurant_id):
     orders_list = [order.to_dict() for order in restaurant.orders]
     return (orders_list)
 
-@app_views.route('customers/<cutomer_id>/orders', methods=['GET'], strict_slashes=False)
-def get_customer_order(customer_id):
-    """This retrieves a list all orders of a particular customer"""
+# @app_views.route('customers/<customer_id>/orders', methods=['GET'], strict_slashes=False)
+# def get_customer_order(customer_id):
+#     """This retrieves a list all orders of a particular customer"""
 
-    customer = storage.get(Customer, customer_id)
-    if not customer:
-        return not_found("customer does not exist")
-    orders_list = [order.to_dict() for order in customer.orders]
-    return (orders_list)
+#     customer = storage.get(Customer, customer_id)
+#     if not customer:
+#         return not_found("customer does not exist")
+#     orders_list = [order.to_dict() for order in customer.orders]
+#     return (orders_list)
 
 
 @app_views.route('restaurants/<restaurant_id>/orders', methods=['POST'], strict_slashes=False)
@@ -48,43 +48,49 @@ def post_order(restaurant_id):
     if not restaurant:
         return not_found("restaurant does not exist")
     
-    form_request = request.form
-    if not form_request:
+    json_request = request.get_json()
+    if not json_request:
         bad_request("Not a JSON")
 
-    required = ['item_name', 'item_price', 'customer_id']
+    required = ['items', 'total_amount', 'customer']
     for val in required:
-        if val not in form_request:
+        if val not in json_request:
             return bad_request(f"Missing {val}")
 
-    if not storage.get(Customer, form_request['customer_id']):
-        return not_found("customer does not exist")
+    items = json_request.get('items')
+    customer = json_request.get('customer')
+    total_amount = json_request.get('total_amount')
 
-    order = Order(restaurant_id=restaurant_id, **form_request)
+    # For demonstration, just assuming the order is created and returning a response
+
+    order = Order(restaurant_id=restaurant_id,
+                    items=items,
+                    customer=customer,
+                    total_amount=total_amount
+        )
     order.save()
-
     return make_response(jsonify(order.to_dict()), 201)
 
 
-@app_views.route('/orders/<order_id>', methods=['PUT'], strict_slashes=False)
-def put_order(order_id):
-    """Updates a particular restaurant's order attributes"""
+# @app_views.route('/orders/<order_id>', methods=['PUT'], strict_slashes=False)
+# def put_order(order_id):
+#     """Updates a particular restaurant's order attributes"""
 
-    order = storage.get(Order, order_id)
-    if not order:
-        return not_found("order does not exist")
+#     order = storage.get(Order, order_id)
+#     if not order:
+#         return not_found("order does not exist")
 
-    form_request = request.form
-    if not form_request:
-        return bad_request("Not form-data")
-    ignore_list = ['id', 'updated_at', 'created_at']
+#     form_request = request.form
+#     if not form_request:
+#         return bad_request("Not form-data")
+#     ignore_list = ['id', 'updated_at', 'created_at']
 
-    for key, value in form_request.items():
-        if key not in ignore_list:
-            setattr(order, key, value)
+#     for key, value in form_request.items():
+#         if key not in ignore_list:
+#             setattr(order, key, value)
 
-    storage.save()
-    return make_response(jsonify(order.to_dict()), 201)
+#     storage.save()
+#     return make_response(jsonify(order.to_dict()), 201)
 
 
 @app_views.route('/orders/<order_id>', methods=['DELETE'], strict_slashes=False)

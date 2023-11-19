@@ -11,6 +11,7 @@ from models.restaurant import Restaurant
 from models.review import Review
 from models.vendor import Vendor
 from models.order import Order
+from models.cart_item import CartItem
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -19,7 +20,14 @@ from cloudinary.uploader import upload
 from dotenv import load_dotenv
 
 
-classes = {"Customer": Customer, "Item": Item, "Restaurant": Restaurant, "Review": Review, "Vendor": Vendor, "Order": Order}
+classes = {"Customer": Customer,
+            "Item": Item,
+            "Restaurant": Restaurant,
+            "Review": Review,
+            "Vendor": Vendor, 
+            "Order": Order,
+            "CartItem": CartItem
+            }
 
 class DBStorage:
     """ This class interacts with the MYSQL database """

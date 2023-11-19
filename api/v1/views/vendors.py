@@ -35,7 +35,6 @@ def vendor_login():
 
 
 @app_views.route('/vendors', methods=['GET'], strict_slashes=False)
-@jwt_required()
 def get_vendors():
     """This retrieves a list all vendors"""
 
@@ -104,7 +103,7 @@ def delete_vendor(vendor_id):
 
     vendor = storage.get(Vendor, vendor_id)
     if not vendor:
-        return not_found()
+        return not_found("review does not exist")
     
     storage.delete(vendor)
     storage.save()

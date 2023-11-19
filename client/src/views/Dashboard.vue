@@ -200,7 +200,7 @@
         }
     };
 
-    // Dleltes an item
+    // Deletes an item
     const deleteItem= async (itemId) => {
         try {
             const response = await axios.delete(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/items/${itemId}`);
