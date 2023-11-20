@@ -10,7 +10,7 @@ from models.restaurant import Restaurant
 from models.cart_item import CartItem
 from api.v1.errors import error_response, bad_request, not_found
 
-@app_views.route('customers/<cutomer_id>/cart_items', methods=['GET'], strict_slashes=False)
+@app_views.route('customers/<customer_id>/cart_items', methods=['GET'], strict_slashes=False)
 def get_cart_item(customer_id):
     """This retrieves a list all items in the cart of a particular customer"""
 
