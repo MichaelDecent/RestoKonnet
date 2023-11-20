@@ -16,6 +16,8 @@ class Item(BaseModel, Base):
     name = Column(String(60), nullable=False)
     price = Column(Integer, nullable=False)
     image = Column(String(256), nullable=True)
+    count = Column(Integer, default=0)
+
 
    
 

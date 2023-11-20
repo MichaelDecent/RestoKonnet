@@ -15,6 +15,8 @@ class CartItem(BaseModel, Base):
     item_name = Column(String(60), nullable=False)
     item_price = Column(Integer, nullable=False)
     status = Column(String(60), default='pending')
+    count = Column(Integer)
+
 
 
     def __init__(self, *args, **kwargs):
