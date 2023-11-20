@@ -14,25 +14,24 @@ from api.v1.errors import error_response, bad_request, not_found
 @app_views.route('/cart_items', methods=['GET'], strict_slashes=False)
 def get_cart_item():
     """This retrieves a list all items in the cart of a particular customer"""
-    form_request = request.form
-    if not form_request:
-        bad_request("Not a form-data")
 
-    if 'customer_id' in form_request:
-        customer = storage.get(Customer, form_request['customer_id'])
+    if 'customer_id' in request.args:
+        customer = storage.get(Customer, request.args['customer_id'])
         if customer:
             carts_items = [cart.to_dict() for cart in customer.cart_items]
         else:
             return not_found("customer does not exist")
 
-    elif 'vendor_id' in form_request:
-        vendor = storage.get(Vendor, form_request['vendor_id'])
+    elif 'vendor_id' in request.args:
+        vendor = storage.get(Vendor, request.args['vendor_id'])
         if vendor:
             carts_items = [cart.to_dict() for cart in vendor.cart_items]
         else:
             return not_found("vendor does not exist")
+
     else:
         return not_found("Missing customer_id or vendor_id does not exist")
+
     return (carts_items)
 
 
