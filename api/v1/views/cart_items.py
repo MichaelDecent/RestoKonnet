@@ -8,26 +8,27 @@ from models import storage
 from models.customer import Customer
 from models.restaurant import Restaurant
 from models.cart_item import CartItem
+from models.vendor import Vendor
 from api.v1.errors import error_response, bad_request, not_found
 
-@app_views.route('customers/<customer_id>/cart_items', methods=['GET'], strict_slashes=False)
-def get_cart_item(customer_id):
+@app_views.route('/cart_items', methods=['GET'], strict_slashes=False)
+def get_cart_item():
     """This retrieves a list all items in the cart of a particular customer"""
 
     customer = storage.get(Customer, customer_id)
-    if not customer:
-        return not_found("customer does not exist")
-    carts_items = [cart.to_dict() for cart in customer.cart_items]
+    vendor = storage.get(Vendor, vendor_id)
+    if customer:
+        carts_items = [cart.to_dict() for cart in customer.cart_items]
+    elif vendor:
+        carts_items = [cart.to_dict() for cart in vendor.cart_items]
+    else:
+        return not_found("customer or vendor does not exist")
     return (carts_items)
 
 
-@app_views.route('customers/<customer_id>/cart_items', methods=['POST'], strict_slashes=False)
-def post_cart_item(customer_id):
+@app_views.route('/cart_items', methods=['POST'], strict_slashes=False)
+def post_cart_item():
     """ This creates a new cart_item order """
-
-    customer = storage.get(Customer, customer_id)
-    if not customer:
-        return not_found("customer does not exist")
     
     form_request = request.form
     if not form_request:
@@ -38,8 +39,13 @@ def post_cart_item(customer_id):
         if val not in form_request:
             return bad_request(f"Missing {val}")
 
-    cart_item = CartItem(customer_id=customer_id, **form_request)
-    cart_item.save()
+    customer = storage.get(Customer, form_request['customer_id'])
+    vendor = storage.get(Vendor, form_request['vendor_id'])
+    if customer or vendor:
+        cart_item = CartItem(**form_request)
+        cart_item.save()
+    else:
+        return not_found("customer or vendor does not exist")
 
     return make_response(jsonify(cart_item.to_dict()), 201)
 
