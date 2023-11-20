@@ -25,9 +25,9 @@ def get_cart_item(customer_id):
 def post_cart_item(customer_id):
     """ This creates a new cart_item order """
 
-    restaurant = storage.get(Customer, customer_id)
-    if not restaurant:
-        return not_found("restaurant does not exist")
+    customer = storage.get(Customer, customer_id)
+    if not customer:
+        return not_found("customer does not exist")
     
     form_request = request.form
     if not form_request:
