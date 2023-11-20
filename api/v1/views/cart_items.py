@@ -14,15 +14,25 @@ from api.v1.errors import error_response, bad_request, not_found
 @app_views.route('/cart_items', methods=['GET'], strict_slashes=False)
 def get_cart_item():
     """This retrieves a list all items in the cart of a particular customer"""
+    form_request = request.form
+    if not form_request:
+        bad_request("Not a form-data")
 
-    customer = storage.get(Customer, customer_id)
-    vendor = storage.get(Vendor, vendor_id)
-    if customer:
-        carts_items = [cart.to_dict() for cart in customer.cart_items]
-    elif vendor:
-        carts_items = [cart.to_dict() for cart in vendor.cart_items]
+    if 'customer_id' in form_request:
+        customer = storage.get(Customer, form_request['customer_id'])
+        if customer:
+            carts_items = [cart.to_dict() for cart in customer.cart_items]
+        else:
+            return not_found("customer does not exist")
+
+    elif 'vendor_id' in form_request:
+        vendor = storage.get(Vendor, form_request['vendor_id'])
+        if vendor:
+            carts_items = [cart.to_dict() for cart in vendor.cart_items]
+        else:
+            return not_found("vendor does not exist")
     else:
-        return not_found("customer or vendor does not exist")
+        return not_found("Missing customer_id or vendor_id does not exist")
     return (carts_items)
 
 
@@ -32,20 +42,42 @@ def post_cart_item():
     
     form_request = request.form
     if not form_request:
-        bad_request("Not a JSON")
+        bad_request("Not a form-data")
 
     required = ['item_name', 'item_price']
     for val in required:
         if val not in form_request:
             return bad_request(f"Missing {val}")
+    
+    if 'customer_id' in form_request:
+        print("customer")
+        customer = storage.get(Customer, form_request['customer_id'])
+        print("customer")
+        if customer:
+            cart_item = CartItem(**form_request)
+            cart_item.save()
+        else:
+            return not_found("customer does not exist")
 
-    customer = storage.get(Customer, form_request['customer_id'])
-    vendor = storage.get(Vendor, form_request['vendor_id'])
-    if customer or vendor:
-        cart_item = CartItem(**form_request)
-        cart_item.save()
+    elif 'vendor_id' in form_request:
+        print("vendor")
+        vendor = storage.get(Vendor, form_request['vendor_id'])
+        print("vendor")
+        if vendor:
+            cart_item = CartItem(**form_request)
+            cart_item.save()
+        else:
+            return not_found("vendor does not exist")
     else:
-        return not_found("customer or vendor does not exist")
+        return not_found("Missing customer_id or vendor_id does not exist")
+
+    # customer = storage.get(Customer, form_request['customer_id'])
+    # vendor = storage.get(Vendor, form_request['vendor_id'])
+    # if customer or vendor:
+    #     cart_item = CartItem(**form_request)
+    #     cart_item.save()
+    # else:
+    #     return not_found("customer or vendor does not exist")
 
     return make_response(jsonify(cart_item.to_dict()), 201)
 
