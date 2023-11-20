@@ -69,7 +69,7 @@ def put_cart_item(cart_item_id):
 def delete_cart_item(cart_item_id):
     """Deletes a paticular cart_item object """
 
-    cart_item = storage.get(Order, order_id)
+    cart_item = storage.get(CartItem, cart_item_id)
     if not cart_item:
         return not_found("cart_item does not exist")
     
