@@ -71,14 +71,6 @@ def post_cart_item():
     else:
         return not_found("Missing customer_id or vendor_id does not exist")
 
-    # customer = storage.get(Customer, form_request['customer_id'])
-    # vendor = storage.get(Vendor, form_request['vendor_id'])
-    # if customer or vendor:
-    #     cart_item = CartItem(**form_request)
-    #     cart_item.save()
-    # else:
-    #     return not_found("customer or vendor does not exist")
-
     return make_response(jsonify(cart_item.to_dict()), 201)
 
 
