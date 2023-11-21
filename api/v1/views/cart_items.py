@@ -51,15 +51,12 @@ def post_vendor_item(vendor_id):
         if val not in form_request:
             return bad_request(f"Missing {val}")
 
-    cart_item = CartItem(vendor_id=vendor_id,
-                        item_name=form_request['item_name'],
-                        item_price=form_request['item_price'],
-                        customer_id=form_request['customer_id'])
+    cart_item = CartItem(vendor_id=vendor_id, **form_request)
     cart_item.save()
 
     return make_response(jsonify(cart_item.to_dict()), 201)
 
-@app_views.route('/customer/<customer_id>/cart_items', methods=['POST'], strict_slashes=False)
+@app_views.route('/customers/<customer_id>/cart_items', methods=['POST'], strict_slashes=False)
 def post_customer_item(customer_id):
     """ This creates a new customer's cart_item """
 
@@ -76,10 +73,7 @@ def post_customer_item(customer_id):
         if val not in form_request:
             return bad_request(f"Missing {val}")
 
-    cart_item = CartItem(customer_id=customer_id,
-                        item_name=form_request['item_name'],
-                        item_price=form_request['item_price'],
-                        vendor_id=form_request['vendor_id'])
+    cart_item = CartItem(customer_id=customer_id, **form_request)
     cart_item.save()
 
     return make_response(jsonify(cart_item.to_dict()), 201)

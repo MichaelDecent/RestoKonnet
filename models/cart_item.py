@@ -11,8 +11,8 @@ class CartItem(BaseModel, Base):
     describes the CartItem table
     """
     __tablename__ = 'cart_items'
-    customer_id = Column(String(60), ForeignKey('customers.id'), nullable=False)
-    vendor_id = Column(String(60), ForeignKey('vendors.id'), nullable=False)
+    customer_id = Column(String(60), ForeignKey('customers.id'))
+    vendor_id = Column(String(60), ForeignKey('vendors.id'))
     item_name = Column(String(60), nullable=False)
     item_price = Column(Integer, nullable=False)
     status = Column(String(60), default='pending')

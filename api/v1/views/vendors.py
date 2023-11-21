@@ -103,7 +103,7 @@ def delete_vendor(vendor_id):
 
     vendor = storage.get(Vendor, vendor_id)
     if not vendor:
-        return not_found("review does not exist")
+        return not_found("vendor does not exist")
     
     storage.delete(vendor)
     storage.save()
