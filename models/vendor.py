@@ -12,8 +12,7 @@ class Vendor(BaseModel, Base):
     describes the vendors table
     """
     __tablename__ = 'vendors'
-    first_name = Column(String(60), nullable=False)
-    last_name = Column(String(60), nullable=False)
+    name = Column(String(60), nullable=False)
     phone_no = Column(String(60), nullable=False, unique=True)
     address = Column(String(256), nullable=False)
     password = Column(String(256), nullable=False, unique=True)

@@ -61,7 +61,7 @@ def post_vendor():
     if not form_request:
         return bad_request("Not form-data")
     
-    required = ['first_name', 'last_name', 'address', 'email', 'password', 'phone_no']
+    required = ['name', 'address', 'email', 'password', 'phone_no']
     for val in required:
         if val not in form_request:
             return bad_request(f"Missing {val}")
