@@ -30,7 +30,7 @@ def get_customer_cart(customer_id):
     if not customer:
         return not_found("customer does not exist")
 
-    cart_items = [cart.to_dict() for cart in vendor.cart_items]
+    cart_items = [cart.to_dict() for cart in customer.cart_items]
     return (cart_items)
 
 
