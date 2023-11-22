@@ -18,6 +18,8 @@ class Restaurant(BaseModel, Base):
     reviews = relationship("Review", backref="restaurant", cascade="all, delete, delete-orphan")
     items = relationship("Item", backref="restaurant", cascade="all, delete, delete-orphan")
     orders = relationship("Order", backref="restaurant", cascade="all, delete, delete-orphan")
+    cart_items = relationship("CartItem", backref="restaurant", cascade="all, delete, delete-orphan")
+
 
 
     def __init__(self, *args, **kwargs):
