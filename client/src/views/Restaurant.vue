@@ -24,27 +24,19 @@
     console.log(vendorId.value)
 
     const getCurrentUser = async () => {
-        if (customerId.value != null){
-            try {
+        try {
+            if (customerId.value != null) {
                 const response = await axios.get(`${baseUrl.value}/customers/${customerId.value}`)
                 currentUser.value = response.data
-                console.log(currentUser.value)
-
-            } catch(error) {
-                console.log(error)
-            }
-    
-        }else if (vendorId.value != null){
-            try {
+            } else if (vendorId.value != null) {
                 const response = await axios.get(`${baseUrl.value}/vendors/${vendorId.value}`)
                 currentUser.value = response.data
-                console.log(response.data)
-            } catch(error) {
-                console.log(error)
             }
+            return currentUser.value
+        } catch(error) {
+            alert(error)
         }
-        return currentUser.value
-    } 
+    }
 
     const calculateTotalAmount = () => {
         total_amount.value = 0
@@ -89,11 +81,14 @@
             formData.append("item_name", item_name)
             formData.append("item_price", item_price)
             formData.append("count", count)
-    
-            if (customerId.value != null){
-                const response = await axios.post(`${baseUrl.value}/customers/${customerId.value}/cart_items`, formData)
-            }else if (vendorId.value != null){
-                const response = await axios.post(`${baseUrl.value}/vendors/${vendorId.value}/cart_items`, formData)
+
+            if (customerId.value != null) {
+                formData.append("customer_id", customerId.value)
+                const response = await axios.post(`${baseUrl.value}/${currentPath.value}/cart_items`, formData);
+            } else if (vendorId.value != null) {
+                formData.append("vendor_id", vendorId.value)
+                const response = await axios.post(`${baseUrl.value}/${currentPath.value}/cart_items`, formData);
+                console.log(response.data)
             }
             alert("added to cart sucessfully")
             get_cart_items()
@@ -105,11 +100,17 @@
 
     const get_cart_items = async () => {
         try {
+            const queryParams = {};
+
             if (customerId.value != null) {
-                const response = await axios.get(`${baseUrl.value}/customers/${customerId.value}/cart_items`)
+                queryParams.customer_id = customerId.value;
+                const response = await axios.get(`${baseUrl.value}/${currentPath.value}/cart_items`, {
+                    params: queryParams});
                 cartItems.value = response.data
             } else if (vendorId.value != null) {
-                const response = await axios.get(`${baseUrl.value}/vendors/${vendorId.value}/cart_items`)
+                queryParams.vendor_id = vendorId.value;
+                const response = await axios.get(`${baseUrl.value}/${currentPath.value}/cart_items`, {
+                    params: queryParams});
                 cartItems.value = response.data
             }
             calculateTotalAmount()
@@ -173,7 +174,7 @@
                     <p class="text-xl text-gray-600">{{ restaurant.address }}</p>
                 </div>
             </div>
-            <div class="bg-gray-100 py-12 sm:py-16 lg:py-20 w-96">
+            <div class="bg-[#F2FCF2] py-12 sm:py-16 lg:py-20 w-96">
                 <div class="mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center justify-center">
                         <h1 class="text-2xl font-semibold text-gray-900">Your Cart</h1>
@@ -221,7 +222,7 @@
                                 </div>
                   
                                 <div class="mt-6 text-center">
-                                    <button @click="place_order()" type="button" class="group inline-flex w-full items-center justify-center rounded-md bg-gray-900 px-6 py-4 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-gray-800">
+                                    <button @click="place_order()" type="button" class="group inline-flex w-full items-center justify-center rounded-md bg-rgreen-100 px-6 py-4 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-ryellow">
                                             Place Order
                                         <svg xmlns="http://www.w3.org/2000/svg" class="group-hover:ml-8 ml-4 h-6 w-6 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
