@@ -14,7 +14,7 @@
 
     currentPath.value = route.path
 
-     // get vendors data
+     // get customers data
      const getCustomerData = async () => {
         try {
             const response = await axios.get(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1${currentPath.value}`)

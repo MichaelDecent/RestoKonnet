@@ -14,6 +14,7 @@
 
     const router = useRouter()
 
+    // submits a registarion form and creates a new customer
     const submitForm = async () => {
         try {
             const formData = new FormData();

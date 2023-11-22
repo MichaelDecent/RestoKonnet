@@ -9,7 +9,7 @@
 
     const router = useRouter();
 
-
+    // submit customer details to sign in
     const submitForm = async () => {
         const formData = new FormData()
         formData.append('email', vendorEmail.value)

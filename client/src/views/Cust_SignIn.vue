@@ -7,7 +7,7 @@
     const custPhone_no = ref("");
     const router = useRouter();
 
-
+    // submit customer details to sign in
     const submitForm = async () => {
         const formData = new FormData()
         formData.append('phone_no', custPhone_no.value)

@@ -82,7 +82,6 @@
     const itemHandleFileChange = (event) => {
       itemImage.value = event.target.files[0];
     };
-
     const submitItemForm = async () => {
         try {
             const formData = new FormData();
@@ -218,6 +217,7 @@
         }
     };
 
+    // gets orders of a particular restaurant
     const getOrders = async () => {
         try {
             const response = await axios.get(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/restaurants/${restaurantId.value}/orders`);
@@ -228,6 +228,7 @@
         }
     }
 
+    // deletes a particular order
     const deleteOrder = async (orderId) => {
         try {
             const response = await axios.delete(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/orders/${orderId}`);
@@ -238,7 +239,6 @@
             alert(error)
         }
     }
-
 
     onMounted(async () => {
         await getRestaurantId();
