@@ -17,7 +17,9 @@ class Vendor(BaseModel, Base):
     address = Column(String(256), nullable=False)
     password = Column(String(256), nullable=False, unique=True)
     email = Column(String(60), nullable=False, unique=True)
-    restaurants = relationship('Restaurant', backref="vendor", uselist=False, cascade="all, delete, delete-orphan") 
+    restaurants = relationship('Restaurant', backref="vendor", uselist=False, cascade="all, delete, delete-orphan")
+    cart_items = relationship('CartItem', backref="vendor", cascade="all, delete, delete-orphan")
+
 
     def __init__(self, *args, **kwargs):
         """initializes vendor"""

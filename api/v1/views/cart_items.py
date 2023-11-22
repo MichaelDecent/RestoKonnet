@@ -18,8 +18,35 @@ def get_cart_item(restaurant_id):
     restaurant = storage.get(Restaurant, restaurant_id)
     if not restaurant:
         return not_found("restaurant does not exist")
+    
+    cart_items = []
+    if request.args.get('customer_id'):   
+        customer_id = request.args.get('customer_id')
+        customer = storage.get(Customer, customer_id)
+        if customer:
+            customer_cart = [cart.to_dict() for cart in customer.cart_items]
+            print(customer_cart)
+            resto_cart = [cart.to_dict() for cart in restaurant.cart_items]
+            for cart in customer_cart:
+                if cart in resto_cart:
+                    cart_items.append(cart)
+        else:
+            return not_found("customer does not exist")
 
-    cart_items = [cart.to_dict() for cart in restaurant.cart_items]
+    elif request.args.get('vendor_id'):
+        vendor_id = request.args.get('vendor_id')
+        vendor = storage.get(Vendor, vendor_id)
+        if vendor:
+            vendor_cart = [cart.to_dict() for cart in vendor.cart_items]
+            resto_cart = [cart.to_dict() for cart in restaurant.cart_items]
+            for cart in vendor_cart:
+                if cart in resto_cart:
+                    cart_items.append(cart)
+        else:
+            return not_found("vendor does not exist")
+    else:
+        bad_request("NO vendor_id or customer_id")
+
     return (cart_items)
 
 # @app_views.route('/customers/<customer_id>/cart_items', methods=['GET'], strict_slashes=False)
@@ -35,7 +62,7 @@ def get_cart_item(restaurant_id):
 
 
 @app_views.route('/restaurants/<restaurant_id>/cart_items', methods=['POST'], strict_slashes=False)
-def post_cart_item(restaurant_id):
+def post_cutomer_item(restaurant_id):
     """ This creates a new restaurant's cart_item """
 
     restautant = storage.get(Restaurant, restaurant_id)
@@ -50,6 +77,7 @@ def post_cart_item(restaurant_id):
     for val in required:
         if val not in form_request:
             return bad_request(f"Missing {val}")
+
 
     cart_item = CartItem(restaurant_id=restaurant_id, **form_request)
     cart_item.save()
