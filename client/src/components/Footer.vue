@@ -2,7 +2,7 @@
     import Logo from "../components/Logo.vue"
 </script>
 <template>
-     <div class=" border-y border-rgreen-100 flex lg:justify-between lg:mx-40 lg:mt-20 items-center px-3">
+     <div class=" border-y border-rgreen-100 flex lg:justify-between lg:mt-20 items-center">
         <div class="my-20 w-2/4">
             <div class="flex gap-3 overflow-hidden items-center">
                 <img src="../img/ramen_dining.png" alt="logo_icon">
@@ -35,8 +35,8 @@
             </div>
         </div>
     </div>
-    <div>
-        <ul class="flex gap-10 ml-40 text-rgreen-100">
+    <div class="">
+        <ul class="flex gap-10 text-rgreen-100 mb-10">
             <li class="hover:text-ryellow">ABOUT US</li>
             <li class="hover:text-ryellow">CONTACT US</li>
             <li class="hover:text-ryellow">HELP</li>

@@ -6,8 +6,7 @@
 
 
     const vendorSignUpData = ref({
-        first_name: '',
-        last_name: '',
+        name: '',
         phone_no: '',
         email: '',
         password: '',
@@ -19,8 +18,7 @@
     const submitForm = async () => {
         try {
             const formData = new FormData();
-            formData.append('first_name', vendorSignUpData.value.first_name)
-            formData.append('last_name', vendorSignUpData.value.last_name)
+            formData.append('name', vendorSignUpData.value.name)
             formData.append('phone_no', vendorSignUpData.value.phone_no)
             formData.append('email', vendorSignUpData.value.email)
             formData.append('password', vendorSignUpData.value.password)
@@ -51,12 +49,8 @@
                     </h1>
                     <form @submit.prevent="submitForm" class="space-y-4 md:space-y-6">
                         <div>
-                            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">First Name</label>
-                            <input v-model="vendorSignUpData.first_name" type="text" name="first_name" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-ryellow focus:border-ryellow block w-full p-2.5" placeholder="Enter your name" required>
-                        </div>
-                        <div>
-                            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900">Last Name</label>
-                            <input v-model="vendorSignUpData.last_name" type="text" name="last_name" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-ryellow focus:border-ryellow block w-full p-2.5" placeholder="Enter your name" required>
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
+                            <input v-model="vendorSignUpData.name" type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-ryellow focus:border-ryellow block w-full p-2.5" placeholder="Enter your name" required>
                         </div>
                         <div>
                             <label for="phone_no" class="block mb-2 text-sm font-medium text-gray-900">Phone Number</label>

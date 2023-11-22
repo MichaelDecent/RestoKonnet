@@ -15,6 +15,8 @@
         try {
             const response = await axios.post('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/customer_login', formData);
             localStorage.setItem('token', response.data.access_token);
+            localStorage.setItem('customer_id', response.data.id)
+            localStorage.removeItem('vendor_id');
             const id = response.data.id
             router.push(`/customers/${id}`)
 
