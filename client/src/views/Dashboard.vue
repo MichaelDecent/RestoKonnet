@@ -10,6 +10,7 @@
     const restaurant = ref({})
     const restoItems = ref([])
     const route = useRoute()
+    const orders = ref([])
 
 
     currentPath.value = route.path
@@ -91,6 +92,7 @@
 
             const response = await axios.post(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/restaurants/${restaurantId.value}/items`, formData);
             alert("upload successful")
+            getRestoItems();
 
         } catch (error) {
             console.error('Upload Failed:', error);
@@ -147,7 +149,6 @@
             console.log(restaurantId.value)
             const response = await axios.get(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/restaurants/${restaurantId.value}/items`);
             restoItems.value = response.data
-            console.log(response.data)
 
         } catch (error) {
             alert("No Item Available")
@@ -164,6 +165,7 @@
 
             const response = await axios.put(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/items/${itemId}`, formData);
             alert("update successful")
+            getRestoItems();
 
         } catch (error) {
             alert(error)
@@ -178,6 +180,8 @@
 
             const response = await axios.put(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/items/${itemId}`, formData);
             alert("update successful")
+            getRestoItems();
+
 
         } catch (error) {
             alert(error)
@@ -193,6 +197,7 @@
 
             const response = await axios.put(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/items/${itemId}/image`, formData);
             alert("update successful")
+            getRestoItems();
 
         } catch (error) {
             alert(error)
@@ -205,6 +210,7 @@
         try {
             const response = await axios.delete(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/items/${itemId}`);
             alert("Deleted successfully")
+            getRestoItems();
 
         } catch (error) {
             alert(error)
@@ -212,10 +218,32 @@
         }
     };
 
+    const getOrders = async () => {
+        try {
+            const response = await axios.get(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/restaurants/${restaurantId.value}/orders`);
+            orders.value = response.data
+        } catch(error) {
+            console.log(error)
+            alert(error)
+        }
+    }
+
+    const deleteOrder = async (orderId) => {
+        try {
+            const response = await axios.delete(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/orders/${orderId}`);
+            getOrders()            
+
+        } catch(error) {
+            console.log(error)
+            alert(error)
+        }
+    }
+
 
     onMounted(async () => {
         await getRestaurantId();
         getRestoItems();
+        getOrders()
     });
 
 </script>
@@ -260,7 +288,7 @@
                                 </button>
                             </div>
                         </div>
-                        <button type="submit" class="lg:w-full text-white bg-rgreen-100 hover:bg-ryellow font-semibold rounded-lg lg:text-lg px-5 py-2.5 text-center mt-5">Upload</button>
+                        <button type="submit" class="w-full text-white bg-rgreen-100 hover:bg-ryellow font-semibold rounded-lg lg:text-lg px-5 py-2.5 text-center mt-5">Upload</button>
                     </form>
                 </div>
                 <button @click="deleteRestaurant()" class="bg-rgreen-100 hover:bg-ryellow text-white font-semibold p-2 rounded transform hover:scale-105 transition-transform duration-300 ease-in-out mt-5" >
@@ -292,20 +320,38 @@
                 </div>
             </div>
         </div>
-        <div>
-            <h2 class="text-rgreen-100 text-2xl lg:text-4xl font-poppins font-semibold break-words lg:ml-10 mt-10">Menu List</h2>
-            <div class="lg:mt-10 mt-5 relative lg:mx-10 lg:grid lg:grid-cols-5 pb-5  gap-5 w-1120px md:w-85vw overflow-x-auto rounded-lg p-3 flex flex-wrap">
-                <div v-for="item in restoItems" :key="item.id" class=" w-80 h-80 border border-rgreen-100 rounded-lg overflow-hidden mt-5 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 ease-in-out">
-                    <img class="w-full h-1/3" :src="item.image" alt="Card Image">
-                    <input @change="itemHandleFileChange" type="file" name="" id="" class="mx-2">
-                    <button @click="updateItemImage(item.id)" class="mx-2 my-2 text-sm bg-rgreen-100 hover:bg-ryellow text-white py-1 px-2 rounded transform hover:scale-105 transition-transform duration-300 ease-in-out">update</button>
-                    <div class="bg-white">
-                        <input v-model="itemData.name" type="text" class="mx-2 border text-sm p-1" :placeholder="item.name">
-                        <button @click="updateItemName(item.id)" class="my-2 ml-2 text-sm bg-rgreen-100 hover:bg-ryellow text-white py-1 px-2 rounded transform hover:scale-105 transition-transform duration-300 ease-in-out">update</button>
-                        <input v-model="itemData.price" class="text-sm p-1 border mx-2" :placeholder="item.price">
-                        <button @click="updateItemPrice(item.id)" class="my-2 ml-2 text-sm bg-rgreen-100 hover:bg-ryellow text-white py-1 px-2 rounded transform hover:scale-105 transition-transform duration-300 ease-in-out">update</button>
+        <div class="lg:grid lg:grid-cols-2">
+            <div>
+                <h2 class="text-rgreen-100 text-2xl lg:text-4xl font-poppins font-semibold break-words lg:ml-10 mt-10">Menu List</h2>
+                <div class="lg:mt-10 mt-5 justify-center relative lg:mx-10 lg:grid lg:grid-cols-2 pb-5 w-1120px md:w-85vw overflow-x-auto rounded-lg p-3 flex flex-wrap">
+                    <div v-for="item in restoItems" :key="item.id" class=" w-80 h-80 border border-rgreen-100 rounded-lg overflow-hidden mt-5 shadow-lg hover:shadow-2xl transform hover:scale-105 transition-transform duration-300 ease-in-out">
+                        <img class="w-full h-1/3" :src="item.image" alt="Card Image">
+                        <input @change="itemHandleFileChange" type="file" name="" id="" class="mx-2" required>
+                        <button @click="updateItemImage(item.id)" class="mx-2 my-2 text-sm bg-rgreen-100 hover:bg-ryellow text-white py-1 px-2 rounded transform hover:scale-105 transition-transform duration-300 ease-in-out">update</button>
+                        <div class="bg-white">
+                            <input v-model="itemData.name" type="text" class="mx-2 border text-sm p-1" :placeholder="item.name" required>
+                            <button @click="updateItemName(item.id)" class="my-2 ml-2 text-sm bg-rgreen-100 hover:bg-ryellow text-white py-1 px-2 rounded transform hover:scale-105 transition-transform duration-300 ease-in-out">update</button>
+                            <input v-model="itemData.price" class="text-sm p-1 border mx-2" :placeholder="item.price" required>
+                            <button @click="updateItemPrice(item.id)" class="my-2 ml-2 text-sm bg-rgreen-100 hover:bg-ryellow text-white py-1 px-2 rounded transform hover:scale-105 transition-transform duration-300 ease-in-out">update</button>
+                        </div>
+                        <button @click="deleteItem(item.id)" class="my-2 ml-2 text-sm bg-rgreen-100 hover:bg-ryellow text-white py-1 px-2 rounded transform hover:scale-105 transition-transform duration-300 ease-in-out">delete item</button>
                     </div>
-                    <button @click="deleteItem(item.id)" class="my-2 ml-2 text-sm bg-rgreen-100 hover:bg-ryellow text-white py-1 px-2 rounded transform hover:scale-105 transition-transform duration-300 ease-in-out">delete item</button>
+                </div>
+            </div>
+            <div>
+                <h2 class="text-rgreen-100 text-2xl lg:text-4xl font-poppins font-semibold break-words lg:ml-10 mt-10">Latest Orders</h2>
+                <div v-for="order in orders" :key="order.id" class="bg-gray-100 p-4 my-4 rounded-lg shadow-md">
+                    <p class="text-lg font-semibold">{{ order.customer.name }}</p>
+                    <p class="text-gray-600">{{ order.customer.address }}</p>
+                    <p class="text-gray-600">{{ order.customer.phone_no }}</p>
+                    <ul class="list-disc ml-4 mt-2">
+                        <li v-for="item in order.items" :key="item.id" class="flex justify-between">
+                            <span class="font-semibold">{{ item.item_name }}</span>
+                            <span class="text-gray-600">{{ item.item_price }}</span>
+                        </li>
+                    </ul>
+                    <p class="text-lg font-semibold mt-2">Total Amount: {{ order.total_amount }}</p>
+                    <button @click="deleteOrder(order.id)" class="my-2 ml-2 text-sm bg-rgreen-100 hover:bg-ryellow text-white py-1 px-2 rounded transform hover:scale-105 transition-transform duration-300 ease-in-out">Delivered</button>
                 </div>
             </div>
         </div>
