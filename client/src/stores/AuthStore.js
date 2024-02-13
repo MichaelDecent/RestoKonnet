@@ -1,5 +1,5 @@
-const { defineStore } = require("pinia");
-const axios = require("axios");
+import { defineStore } from "pinia";
+import axios from "axios";
 
 
 export const useAuthStore = defineStore('auth', {
