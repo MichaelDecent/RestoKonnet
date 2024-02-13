@@ -1,5 +1,5 @@
 <template>
     <RouterLink to="/">
-        <img src="../img/Frame 4.png" alt="">
+        <img class="w-52 md:w-auto" src="../img/Frame 4.png" alt="">
     </RouterLink>
 </template>

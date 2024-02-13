@@ -13,7 +13,10 @@ from api.v1.errors import error_response, bad_request, not_found
 
 @app_views.route('/customer_login', methods=['POST'], strict_slashes=False)
 def customer_login():
-    """ This returns a token for an authenticated customer """
+    """
+    /customer_login, post, 
+    This returns a token for an authenticated customer
+    """
 
     form_request = request.form
 
@@ -35,14 +38,19 @@ def customer_login():
 @jwt_required()
 def get_customers():
 
-    """This retrieves a list all customers"""
+    """
+    /customers, get, This retrieves a list all customers
+    """
     customers_list = [cust.to_dict() for cust in storage.all(Customer).values()]
     return jsonify(customers_list)
 
     
 @app_views.route('/customers/<customer_id>', methods=['GET'], strict_slashes=False)
 def get_customer(customer_id):
-    """This retrieves a customer based on its id"""
+    """
+    /customers/<customer_id>, get, 
+    This retrieves a customer based on its id
+    """
 
     customer = storage.get(Customer, customer_id)
     if not customer:
@@ -52,7 +60,10 @@ def get_customer(customer_id):
 
 @app_views.route('/customers', methods=['POST'], strict_slashes=False)
 def post_customer():
-    """This creates a new customer object"""
+    """
+    /customers, post, 
+    This creates a new customer object
+    """
 
     form_request = request.form
 
@@ -78,7 +89,9 @@ def post_customer():
 
 @app_views.route('/customers/<customer_id>', methods=['PUT'], strict_slashes=False)
 def put_customer(customer_id):
-    """Updates a particular customer's attributes"""
+    """/customers/<customer_id>, put, 
+    Updates a particular customer's attributes
+    """
 
     customer = storage.get(Customer, customer_id)
     if not customer:
@@ -98,7 +111,9 @@ def put_customer(customer_id):
 
 @app_views.route('/customers/<customer_id>', methods=['DELETE'], strict_slashes=False)
 def delete_customer(customer_id):
-    """Deletes a paticular customer object """
+    """/customers/<customer_id>, delete, 
+    Deletes a paticular customer object
+    """
 
     customer = storage.get(Customer, customer_id)
     if not customer:

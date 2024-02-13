@@ -1,9 +1,15 @@
 <script setup>
     import RestoNav from "../components/RestoNav.vue"
-    import Footer2 from "../components/Footer2.vue" 
+    import Footer2 from "../components/Footer2.vue"
+    import Cart from "../components/Cart.vue"
+    import Cust_SignIn from "./Cust_SignIn.vue";
     import { onMounted, ref } from "vue";
+    import { useAuthStore  } from "../stores/AuthStore";
     import axios from "axios";
     import { useRoute } from 'vue-router';
+
+    const authStore = useAuthStore();
+
 
     const restaurant = ref({});
     const items = ref([]);
@@ -14,29 +20,11 @@
     const currentPath = ref('');
     const total_amount = ref()
     const baseUrl = ref('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1')
-    const currentUser = ref({})
-    
+    const currentUser = ref(authStore.currentUser)
 
     customerId.value = localStorage.getItem('customer_id')
     vendorId.value = localStorage.getItem('vendor_id')
-    console.log(customerId.value)
-    console.log(vendorId.value)
-
-    // check and retrieve detail of the current user
-    const getCurrentUser = async () => {
-        try {
-            if (customerId.value != null) {
-                const response = await axios.get(`${baseUrl.value}/customers/${customerId.value}`)
-                currentUser.value = response.data
-            } else if (vendorId.value != null) {
-                const response = await axios.get(`${baseUrl.value}/vendors/${vendorId.value}`)
-                currentUser.value = response.data
-            }
-            return currentUser.value
-        } catch(error) {
-            alert(error)
-        }
-    }
+    currentPath.value = route.path;    
 
     // calculates total amount
     const calculateTotalAmount = () => {
@@ -138,7 +126,6 @@
 
     // creates an order for a aprticular restaurant
     const place_order = async () =>  {
-        getCurrentUser()
         try {
             const orderData = {
                 items: cartItems.value,
@@ -156,7 +143,6 @@
 
     onMounted( () => {
         currentPath.value = route.path;
-        getCurrentUser()
         get_restaurants() 
         get_items()
         get_cart_items()
@@ -165,11 +151,11 @@
 </script>
 
 <template>
-    <div>
+    <div v-if="authStore.isAuthenticated">
         <div class="bg-rgreen-100 border">
-            <RestoNav/>
+            <RestoNav :user="currentUser" />
         </div>
-        <div class="flex flex-wrap justify-center  lg:justify-between lg:mx-60 mx-5">
+        <div class="flex flex-wrap justify-center  lg:justify-between md:mx-auto max-w-screen-xl p-4">
             <div class="lg:w-1/2" >
                 <div class="w-96 h-96 lg:h-96 lg:w-full rounded-lg overflow-hidden mt-5 shadow-lg hover:shadow-2xl">
                     <img class="w-full h-full" :src="restaurant.image" alt="Card Image">
@@ -179,68 +165,38 @@
                     <p class="text-xl text-gray-600">{{ restaurant.address }}</p>
                 </div>
             </div>
-            <div class="bg-[#F2FCF2] py-12 sm:py-16 lg:py-20 w-96">
-                <div class="mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex items-center justify-center">
-                        <h1 class="text-2xl font-semibold text-gray-900">Your Cart</h1>
-                    </div>
-    
-                    <div class="mx-auto mt-8 max-w-2xl md:mt-12">
-                        <div class="bg-white shadow">
-                            <div class="px-4 py-6 sm:px-8 sm:py-10">
-                                <div class="flow-root">
-                                    <ul  v-for="cart_item in cartItems" class="-my-8">
-                                        <li class="flex flex-col space-y-3 py-6 text-left sm:flex-row sm:space-x-5 sm:space-y-0">
-                                            <div class="relative flex flex-1 flex-col justify-between">
-                                                <div class="sm:col-gap-5 sm:grid sm:grid-cols-2">
-                                                    <div class="pr-8 sm:pr-5">
-                                                        <p class="text-base font-semibold text-gray-900">{{ cart_item.item_name }}</p>
-                                                        <p class="mx-0 mt-1 mb-0 text-sm text-gray-400">{{ cart_item.item_price }}</p>
-                                                    </div>
-                            
-                                                    <div class="mt-4 flex items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
-                                                        <div class="sm:order-1">
-                                                            <div class="mx-auto flex h-8 items-stretch text-gray-600">
-                                                                <button @click="cart_item.count--, calculateTotalAmount()" class="flex items-center justify-center rounded-l-md bg-gray-200 px-4 transition hover:bg-black hover:text-white">-</button>
-                                                                     <div class="flex w-full items-center justify-center bg-gray-100 px-4 text-xs uppercase transition">{{ cart_item.count }}</div>
-                                                                <button @click="cart_item.count++, calculateTotalAmount()" class="flex items-center justify-center rounded-r-md bg-gray-200 px-4 transition hover:bg-black hover:text-white">+</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                          
-                                                <div class="flex justify-end sm:bottom-0 sm:top-auto">
-                                                    <button @click="remove_from_cart(cart_item.id)" type="button" class="flex rounded p-2 text-center text-gray-500 transition-all duration-200 ease-in-out focus:shadow hover:text-gray-900">
-                                                        <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" class=""></path>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                  
-                                <div class="mt-6 flex items-center justify-between">
-                                    <p class="text-sm font-medium text-gray-900">Total</p>
-                                    <p class="text-2xl font-semibold text-gray-900"><span class="text-xs font-normal text-gray-400">Naira</span>{{ total_amount }}</p>
-                                </div>
-                  
-                                <div class="mt-6 text-center">
-                                    <button @click="place_order()" type="button" class="group inline-flex w-full items-center justify-center rounded-md bg-rgreen-100 px-6 py-4 text-lg font-semibold text-white transition-all duration-200 ease-in-out focus:shadow hover:bg-ryellow">
-                                            Place Order
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="group-hover:ml-8 ml-4 h-6 w-6 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="hidden lg:block">
+                <Cart :currentPath="currentPath"/>
             </div>
         </div>
-        <div class="lg:mx-60 mx-5">
+        <section class="bg-white py-12 text-gray-700 sm:py-16 lg:py-20">
+            <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-md text-center">
+                    <h2 class="font-serif text-2xl font-bold sm:text-3xl">Available Delicacies</h2>
+                </div>
+
+                <div class="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-4 lg:mt-16">
+      
+                    <article v-for="item in items" class="relative flex flex-col overflow-hidden rounded-lg border">
+                        <div class="aspect-square overflow-hidden">
+                            <img class="h-full w-full object-cover transition-all duration-300 group-hover:scale-125" :src="item.image" alt="item image" />
+                        </div>
+                        <div class="my-4 mx-auto flex w-10/12 flex-col items-start justify-between">
+                            <div class="mb-2 flex">
+                                <p class="mr-3 text-sm font-semibold">{{ item.price }}</p>
+                            </div>
+                            <h3 class="mb-2 text-sm text-gray-400">{{ item.name }}</h3>
+                        </div>
+                        <button @click="add_to_cart(item.name, item.price)" class="group mx-auto mb-2 flex h-10 w-10/12 items-stretch overflow-hidden rounded-md text-gray-600">
+                            <div class="flex w-full items-center justify-center bg-gray-100 text-xs uppercase transition group-hover:bg-ryellow group-hover:text-white">Add</div>
+                            <div class="flex items-center justify-center bg-gray-200 px-5 transition group-hover:bg-yellow-600 group-hover:text-white">+</div>
+                        </button> 
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- <div class="lg:mx-60 mx-5">
             <h2 class="text-rgreen-100 text-2xl lg:text-4xl font-poppins font-semibold break-words mt-5">All Menu</h2>
             <div class="mt-5 relative lg:grid lg:grid-cols-3 justify-center pb-5 lg:gap-32 w-1120px md:w-85vw overflow-x-auto flex flex-wrap">
                 <div  v-for="item in items" class="w-96 h-96 border-2 border-rgreen-100 rounded-lg overflow-hidden mt-5 shadow-lg hover:shadow-2xl">
@@ -264,9 +220,12 @@
                 </div>
             </div>
            
-        </div>
+        </div> -->
         <div class="bg-rgreen-100 border">
             <Footer2/>
         </div>
+    </div>
+    <div v-else="authStore.isAuthenticated">
+        <Cust_SignIn/>
     </div>
 </template>

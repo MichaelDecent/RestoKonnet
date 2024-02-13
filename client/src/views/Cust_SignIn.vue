@@ -1,30 +1,40 @@
 <script setup>
     import Logo from "../components/Logo.vue";
     import { ref } from "vue";
-    import axios from "axios";
     import { useRouter } from "vue-router";
+    import { useAuthStore  } from "../stores/AuthStore";
 
     const custPhone_no = ref("");
     const router = useRouter();
 
-    // submit customer details to sign in
-    const submitForm = async () => {
-        const formData = new FormData()
-        formData.append('phone_no', custPhone_no.value)
+    const authStore = useAuthStore()
 
-        try {
-            const response = await axios.post('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/customer_login', formData);
-            localStorage.setItem('token', response.data.access_token);
-            localStorage.setItem('customer_id', response.data.id)
-            localStorage.removeItem('vendor_id');
-            const id = response.data.id
-            router.push(`/customers/${id}`)
-
-        } catch (error) {
-            alert(error.response.data.message)
-            console.log("Login Failed:", error)
-        }
+    const login_customer = async () => {
+        const response = await authStore.login_customer(custPhone_no.value)
+        router.push(`/customers/${response.id}`)
     }
+
+    
+    // submit customer details to sign in
+
+
+    // const submitForm = async () => {
+    //     const formData = new FormData()
+    //     formData.append('phone_no', custPhone_no.value)
+
+    //     try {
+    //         const response = await axios.post('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/customer_login', formData);
+    //         localStorage.setItem('token', response.data.access_token);
+    //         localStorage.setItem('customer_id', response.data.id)
+    //         localStorage.removeItem('vendor_id');
+    //         const id = response.data.id
+    //         router.push(`/customers/${id}`)
+
+    //     } catch (error) {
+    //         alert(error.response.data.message)
+    //         console.log("Login Failed:", error)
+    //     }
+    // }
 
 </script>
 
@@ -39,7 +49,7 @@
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                             Sign In
                     </h1>
-                    <form @submit.prevent="submitForm" class="space-y-4 md:space-y-6" action="#">
+                    <form @submit.prevent="login_customer" class="space-y-4 md:space-y-6" action="#">
                         <div>
                             <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Phone Number</label>
                             <input v-model="custPhone_no" type="tel" name="phone" id="phone" placeholder="Enter your phone number" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-ryellow focus:border-ryellow block w-full p-2.5" required>

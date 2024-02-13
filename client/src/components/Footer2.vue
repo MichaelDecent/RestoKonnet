@@ -2,7 +2,7 @@
     import Logo2 from "../components/Logo2.vue"
 </script>
 <template>
-    <div class="border-y border-white flex justify-between items-center lg:mt-20 lg:mx-60 mx-5">
+    <div class="border-y border-white flex justify-between items-center lg:mt-10 md:mx-auto max-w-screen-xl px-4">
         <div class="my-20">
             <Logo2/>
         </div>
@@ -36,7 +36,7 @@
         </div>
     </div>
     <div>
-        <ul class="flex gap-10 text-white lg:mb-20 lg:mx-60 mx-5 mb-10">
+        <ul class="flex gap-10 text-white lg:mb-20 md:mx-auto max-w-screen-xl px-4 mb-10">
             <li class="hover:text-ryellow">ABOUT US</li>
             <li class="hover:text-ryellow">CONTACT US</li>
             <li class="hover:text-ryellow">HELP</li>

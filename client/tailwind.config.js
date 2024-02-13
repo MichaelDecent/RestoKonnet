@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+const preline = require('preline/plugin.js');
+
 module.exports = {
     purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
     theme: {
@@ -15,5 +18,7 @@ module.exports = {
     variants: {
       extend: {},
     },
-    plugins: [],
+    plugins: [
+        require('preline/plugin'),
+    ],
   }

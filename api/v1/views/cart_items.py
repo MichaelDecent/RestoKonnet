@@ -13,7 +13,9 @@ from api.v1.errors import error_response, bad_request, not_found
 
 @app_views.route('/restaurants/<restaurant_id>/cart_items', methods=['GET'], strict_slashes=False)
 def get_cart_item(restaurant_id):
-    """This retrieves a list all cart_items in the cart of a particular restaurant"""
+    """
+    Retrieves a list all cart_items in the cart of a particular restaurant
+    """
 
     restaurant = storage.get(Restaurant, restaurant_id)
     if not restaurant:
@@ -49,18 +51,6 @@ def get_cart_item(restaurant_id):
 
     return (cart_items)
 
-# @app_views.route('/customers/<customer_id>/cart_items', methods=['GET'], strict_slashes=False)
-# def get_customer_cart(customer_id):
-#     """This retrieves a list all cart_items in the cart of a particular customer"""
-
-#     customer = storage.get(Customer, customer_id)
-#     if not customer:
-#         return not_found("customer does not exist")
-
-#     cart_items = [cart.to_dict() for cart in customer.cart_items]
-#     return (cart_items)
-
-
 @app_views.route('/restaurants/<restaurant_id>/cart_items', methods=['POST'], strict_slashes=False)
 def post_cutomer_item(restaurant_id):
     """ This creates a new restaurant's cart_item """
@@ -83,28 +73,6 @@ def post_cutomer_item(restaurant_id):
     cart_item.save()
 
     return make_response(jsonify(cart_item.to_dict()), 201)
-
-# @app_views.route('/customers/<customer_id>/cart_items', methods=['POST'], strict_slashes=False)
-# def post_customer_item(customer_id):
-#     """ This creates a new customer's cart_item """
-
-#     customer = storage.get(Customer, customer_id)
-#     if not customer:
-#         return not_found("customer does not exist")
-    
-#     form_request = request.form
-#     if not form_request:
-#         bad_request("Not a form data")
-
-#     required = ['item_name', 'item_price']
-#     for val in required:
-#         if val not in form_request:
-#             return bad_request(f"Missing {val}")
-
-#     cart_item = CartItem(customer_id=customer_id, **form_request)
-#     cart_item.save()
-
-#     return make_response(jsonify(cart_item.to_dict()), 201)
 
 
 @app_views.route('/cart_items/<cart_item_id>', methods=['PUT'], strict_slashes=False)

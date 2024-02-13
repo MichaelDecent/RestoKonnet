@@ -9,7 +9,10 @@ from sqlalchemy.orm import relationship
 
 class Customer(BaseModel, Base):
     """
-    describes the customers table
+    name, str, customer's name
+    phone_no, str, customer's phone_no
+    address, str, customer's address
+    email, str, customer's email
     """
     __tablename__ = 'customers'
     name = Column(String(60), nullable=False)

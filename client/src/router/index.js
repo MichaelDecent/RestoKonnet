@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router"
+// import { useAuthStore } from '../stores/AuthStore'
 import LandingView from "../views/Landing.vue"
 import Cust_SignInView from "../views/Cust_SignIn.vue" 
 import Cust_SignUpView from "../views/Cust_SignUp.vue"
@@ -67,6 +68,19 @@ const router = createRouter({
             component: DashboardView
         }
     ]
-})
+});
+
+// const authStore = useAuthStore();
+
+
+// router.beforeEach((to, from, next) => {
+//     const requiresAuth = to.meta.requiresAuth;
+  
+//     if (requiresAuth && !authStore.isAuthenticated) {
+//       next('/login'); // Redirect to login page if not authenticated
+//     } else {
+//       next();
+//     }
+// });
 
 export default router

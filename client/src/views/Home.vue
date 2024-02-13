@@ -2,42 +2,23 @@
     import RestoNav from "../components/RestoNav.vue"
     import Footer2 from "../components/Footer2.vue"
     import Restaurants from "../components/Restaurants.vue"
-    import { useRouter, useRoute } from "vue-router";
-    import { ref, onMounted } from "vue"
-    import axios from "axios";
+    import { useAuthStore  } from "../stores/AuthStore";
+    import { ref } from "vue";
 
+    const currentUser = ref({})
 
-
-    const customerData = ref({})
-    const currentPath = ref("")
-    const route = useRoute()
-
-    currentPath.value = route.path
-
-     // get customers data
-     const getCustomerData = async () => {
-        try {
-            const response = await axios.get(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1${currentPath.value}`)
-            customerData.value = response.data
-        } catch(error) {
-            alert(error)
-        }
-    };
-
-    onMounted(() => {
-        getCustomerData()
-    });
-
+    const authStore = useAuthStore();
+    currentUser.value = authStore.currentUser
     
 </script>
 
 <template>
     <section class="">
         <div class="bg-rgreen-100 border">
-            <RestoNav/>
+            <RestoNav :user="currentUser"/>
             <div class="my-24">
                 <div class="flex justify-center mb-5">
-                    <p class="text-4xl text-white font-extrabold break-words">Welcome! {{ customerData.name }}</p>
+                    <p class="text-4xl text-white font-extrabold break-words">Welcome! {{ currentUser.name }}</p>
                 </div>
                 <div class="flex justify-center">
                     <div class="flex gap-2 bg-white p-3 rounded-3xl w-96">
@@ -49,7 +30,7 @@
                 </div>
             </div>     
         </div>
-        <div class="lg:mx-60 mx-5 my-5">
+        <div class="md:mx-auto max-w-screen-xl p-4">
             <h2 class="text-rgreen-100 text-2xl lg:text-4xl font-poppins font-semibold break-words">Explore Restaurants</h2>
             <Restaurants/>
             
