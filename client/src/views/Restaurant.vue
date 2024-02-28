@@ -7,6 +7,7 @@
     import { useAuthStore  } from "../stores/AuthStore";
     import axios from "axios";
     import { useRoute } from 'vue-router';
+    import get_cart_items from "../components/Cart.vue";
 
     const authStore = useAuthStore();
 
@@ -82,36 +83,35 @@
                 const response = await axios.post(`${baseUrl.value}/${currentPath.value}/cart_items`, formData);
                 console.log(response.data)
             }
-            alert("added to cart sucessfully")
             get_cart_items()
 
         } catch(error) {
-            alert(error)
+            // alert(error.message)
         }
     }
 
     // retrieves all customer items added to a cart
-    const get_cart_items = async () => {
-        try {
-            const queryParams = {};
+    // const get_cart_items = async () => {
+    //     try {
+    //         const queryParams = {};
 
-            if (customerId.value != null) {
-                queryParams.customer_id = customerId.value;
-                const response = await axios.get(`${baseUrl.value}/${currentPath.value}/cart_items`, {
-                    params: queryParams});
-                cartItems.value = response.data
-            } else if (vendorId.value != null) {
-                queryParams.vendor_id = vendorId.value;
-                const response = await axios.get(`${baseUrl.value}/${currentPath.value}/cart_items`, {
-                    params: queryParams});
-                cartItems.value = response.data
-            }
-            calculateTotalAmount()
+    //         if (customerId.value != null) {
+    //             queryParams.customer_id = customerId.value;
+    //             const response = await axios.get(`${baseUrl.value}/${currentPath.value}/cart_items`, {
+    //                 params: queryParams});
+    //             cartItems.value = response.data
+    //         } else if (vendorId.value != null) {
+    //             queryParams.vendor_id = vendorId.value;
+    //             const response = await axios.get(`${baseUrl.value}/${currentPath.value}/cart_items`, {
+    //                 params: queryParams});
+    //             cartItems.value = response.data
+    //         }
+    //         calculateTotalAmount()
 
-        } catch(error) {
-            alert(error)
-        }
-    }
+    //     } catch(error) {
+    //         alert(error)
+    //     }
+    // }
 
     // deletes an item fromthe cart
     const remove_from_cart = async (cart_item_id) => {
@@ -145,7 +145,6 @@
         currentPath.value = route.path;
         get_restaurants() 
         get_items()
-        get_cart_items()
     });
     
 </script>
