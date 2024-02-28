@@ -10,6 +10,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_tok
 from datetime import timedelta
 from api.v1.errors import error_response, bad_request, not_found
 
+
 @app_views.route('/customer_login', methods=['POST'], strict_slashes=False)
 def customer_login():
     """
