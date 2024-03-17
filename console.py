@@ -2,29 +2,34 @@
 """ console """
 
 import cmd
-from datetime import datetime
 import models
 from models.customer import Customer
-from models.base_model import BaseModel
 from models.item import Item
 from models.restaurant import Restaurant
 from models.review import Review
 from models.vendor import Vendor
-import shlex  # for splitting the line along spaces except in double quotes
+import shlex
 
-classes = {"Customer": Customer, "Item": Item, "Restaurant": Restaurant, "Review": Review, "Vendor": Vendor}
+classes = {
+    "Customer": Customer,
+    "Item": Item,
+    "Restaurant": Restaurant,
+    "Review": Review,
+    "Vendor": Vendor,
+}
 
 
 class RestoCommand(cmd.Cmd):
-    """ RestoKonnect console """
-    prompt = '(RestoKonnect) '
+    """RestoKonnect console"""
+
+    prompt = "(RestoKonnect) "
 
     def do_EOF(self, arg):
         """Exits console"""
         return True
 
     def emptyline(self):
-        """ overwriting the emptyline method """
+        """overwriting the emptyline method"""
         return False
 
     def do_quit(self, arg):
@@ -36,11 +41,11 @@ class RestoCommand(cmd.Cmd):
         new_dict = {}
         for arg in args:
             if "=" in arg:
-                kvp = arg.split('=', 1)
+                kvp = arg.split("=", 1)
                 key = kvp[0]
                 value = kvp[1]
                 if value[0] == value[-1] == '"':
-                    value = shlex.split(value)[0].replace('_', ' ')
+                    value = shlex.split(value)[0].replace("_", " ")
                 else:
                     try:
                         value = int(value)
@@ -120,5 +125,6 @@ class RestoCommand(cmd.Cmd):
         print(", ".join(obj_list), end="")
         print("]")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     RestoCommand().cmdloop()
