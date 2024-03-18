@@ -2,44 +2,52 @@
     import Logo from "../components/Logo.vue"
 </script>
 <template>
-     <div class=" border-y border-rgreen-100 flex lg:justify-between lg:mt-20 items-center">
-        <div class="my-20 w-2/4">
-            <div class="flex gap-3 overflow-hidden items-center">
-                <img src="../img/ramen_dining.png" alt="logo_icon">
-                <img class="w-1/2 lg:w-fit h-fit" src="../img/Restokonnet.png" alt="logo">
-            </div>
-        </div>
-        <div class="my-16 w-2/4">
-            <a class="flex gap-3 my-2" href="">
-                <img class="h-fit" src="../img/icons/round-place-24px.png" alt="">
-                <span class="text-rgreen-100  hover:text-ryellow transition duration-300 ease-in-out">345 Faulconer Drive, Suite 4 • Charlottesville, CA, 12345</span>
-            </a>
-            <a class="flex gap-3 my-2" href="">
-                <img src="../img/icons/round-phone-24px.png" alt="">
-                <span class="text-rgreen-100  hover:text-ryellow transition duration-300 ease-in-out">(+123) 456-7890</span>
-            </a>
-            <div class="flex gap-5 items-center mt-8 ml-2">
-                <p class="text-rgreen-100">Social Media</p>
-                <a href="">
-                    <img class="transform hover:scale-150 transition-transform duration-300 ease-in-out" src="../img/icons/linkedin black.1.png" alt="">
-                </a>
-                <a href="">
-                    <img class="transform hover:scale-150 transition-transform duration-300 ease-in-out" src="../img/icons/facebook black.1.png" alt="">
-                </a>
-                <a href="">
-                    <img class="transform hover:scale-150 transition-transform duration-300 ease-in-out" src="../img/icons/twitter black.1.png" alt="">
-                </a>
-                <a href="">
-                    <img class="transform hover:scale-150 transition-transform duration-300 ease-in-out" src="../img/icons/youtube color.1.png" alt="">
+    <footer class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
+        <!-- Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-5 text-center">
+            <div class="flex justify-center lg:justify-start">
+                <a href="#" aria-label="Brand">
+                    <Logo />
                 </a>
             </div>
+          <!-- End Col -->
+      
+          <ul class="text-center">
+            <li class="inline-block relative pe-8 last:pe-0 last-of-type:before:hidden before:absolute before:top-1/2 before:end-3 before:-translate-y-1/2 before:content-['*'] before:text-ryellow">
+              <a class="inline-flex gap-x-2 text-md text-rgreen-100 hover:text-ryellow" href="#">
+                About
+              </a>
+            </li>
+            <li class="inline-block relative pe-8 last:pe-0 last-of-type:before:hidden before:absolute before:top-1/2 before:end-3 before:-translate-y-1/2 before:content-['*'] before:text-ryellow">
+              <a class="inline-flex gap-x-2 text-md text-rgreen-100 hover:text-ryellow" href="#">
+                Services
+              </a>
+            </li>
+            <li class="inline-block relative pe-8 last:pe-0 last-of-type:before:hidden before:absolute before:top-1/2 before:end-3 before:-translate-y-1/2 before:content-['/'] before:text-ryellow">
+              <a class="inline-flex gap-x-2 text-md text-rgreen-100 hover:text-ryellow" href="#">
+                Blog
+              </a>
+            </li>
+          </ul>
+          <!-- End Col -->
+      
+          <!-- Social Brands -->
+          <div class="md:text-end space-x-2">
+            <a class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">
+                <img class="transform hover:scale-150 transition-transform duration-300 ease-in-out" src="../img/icons/linkedin black.1.png" alt="">
+            </a>
+            <a class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">
+                <img class="transform hover:scale-150 transition-transform duration-300 ease-in-out" src="../img/icons/facebook black.1.png" alt="">
+            </a>
+            <a class="size-8 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="#">
+                <img class="transform hover:scale-150 transition-transform duration-300 ease-in-out" src="../img/icons/twitter black.1.png" alt="">
+            </a>
+          </div>
+          <!-- End Social Brands -->
         </div>
-    </div>
-    <div class="">
-        <ul class="flex gap-10 text-rgreen-100 mb-10">
-            <li class="hover:text-ryellow">ABOUT US</li>
-            <li class="hover:text-ryellow">CONTACT US</li>
-            <li class="hover:text-ryellow">HELP</li>
-        </ul>
-    </div>
+        <div class="flex justify-center mt-10 text-sm text-gray-500">
+            © All Rights Reserved. 2024, Restokonnet Inc.
+        </div>
+        <!-- End Grid -->
+    </footer>
 </template>

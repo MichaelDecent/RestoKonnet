@@ -25,43 +25,28 @@
                     <li class="text-gray-600 md:mr-12 hover:text-rgreen-100"><RouterLink to="#">About</RouterLink></li>
                     <li class="text-gray-600 md:mr-12 hover:text-rgreen-100"><RouterLink to="#">Support</RouterLink></li>
                     <li class="text-gray-600 md:mr-12 hover:text-rgreen-100">
-                        <button @click.prevent="router.push('/customerSignIn')" class="rounded-md border-2 border-rgreen-100 px-6 py-1 font-medium text-rgreen-100 transition-colors hover:bg-rgreen-100 hover:text-white">Login</button>
+                        
+                        <div class="hs-dropdown relative inline-flex [--trigger:hover]">
+                            <button id="hs-dropdown-hover-event" type="button" class="hs-dropdown-toggle py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border bg-rgreen-100 text-white shadow-sm hover:bg-ryellow disabled:opacity-50 disabled:pointer-events-none">
+                              Login
+                              <svg class="hs-dropdown-open:rotate-180 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                            </button>
+                        
+                            <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-2 mt-2 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" aria-labelledby="hs-dropdown-hover-event">
+                              <RouterLink to="/customerSignIn" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-ryellow hover:text-white focus:outline-none focus:bg-gray-100">
+                                Customer
+                              </RouterLink>
+                              <RouterLink to="/vendorSignIn" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-ryellow hover:text-white focus:outline-none focus:bg-gray-100">
+                                Vendor
+                              </RouterLink>
+                              
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </nav>
         </div>
     </header>
-    <!-- <header class="flex flex-col md:flex-row justify-between items-center lg:mx-60 mt-20">
-        <Logo />
-        <nav class="mt-4 md:mt-0">
-            <ul class="flex space-x-4 md:space-x-6">
-                <li class="relative group">
-                    <RouterLink to="#" class="text-rgreen-100 hover:text-ryellow transition duration-300 ease-in-out relative group text-lg md:text-2xl font-semibold">
-                        Home
-                        <div class="absolute w-full h-1 bg-ryellow bottom-0 left-0 transform scale-x-0 transition-transform origin-left group-hover:scale-x-100 duration-300 ease-in-out"></div>
-                    </RouterLink>
-                </li>
-                <li class="relative group">
-                    <RouterLink to="#" class="text-rgreen-100 hover:text-ryellow transition duration-300 ease-in-out relative group text-lg md:text-2xl font-semibold">
-                        About Us
-                        <div class="absolute w-full h-1 bg-ryellow bottom-0 left-0 transform scale-x-0 transition-transform origin-left group-hover:scale-x-100 duration-300 ease-in-out"></div>
-                    </RouterLink>
-                </li>
-                <li class="relative group">
-                    <RouterLink to="/vendorSignIn" class="text-rgreen-100 hover:text-ryellow transition duration-300 ease-in-out relative group text-lg md:text-2xl font-semibold">
-                        Vendor
-                        <div class="absolute w-full h-1 bg-ryellow bottom-0 left-0 transform scale-x-0 transition-transform origin-left group-hover:scale-x-100 duration-300 ease-in-out"></div>
-                    </RouterLink>
-                </li>
-                <li class="relative group">
-                    <RouterLink to="/customerSignIn" class="text-rgreen-100 hover:text-ryellow transition duration-300 ease-in-out relative group text-lg md:text-2xl font-semibold">
-                        Customer
-                        <div class="absolute w-full h-1 bg-ryellow bottom-0 left-0 transform scale-x-0 transition-transform origin-left group-hover:scale-x-100 duration-300 ease-in-out"></div>
-                    </RouterLink>
-                </li>
-            </ul>
-        </nav>
-    </header> -->
     <div class="mt-5 gap-20 flex flex-col md:flex-row items-center justify-between md:mx-auto max-w-screen-xl p-4">
         <div class="md:w-1/2">
             <div class="text-rgreen-100 text-4xl md:text-5xl lg:text-6xl font-poppins font-extrabold">

@@ -9,7 +9,9 @@ import HomeView from "../views/Home.vue"
 import VendorHomeView from "../views/VendHome.vue"
 import RestaurantView from "../views/Restaurant.vue"
 import DashboardView from "../views/Dashboard.vue"
+import { IStaticMethods } from "preline/preline";
 
+window.HSStaticMethods = /** @type {IStaticMethods} */ ({});
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,6 +72,14 @@ const router = createRouter({
     ]
 });
 
+router.afterEach((to, from, failure) => {
+    if (!failure) {
+      setTimeout(() => {
+        window.HSStaticMethods.autoInit();
+      }, 100)
+    }
+  });
+
 // const authStore = useAuthStore();
 
 
@@ -82,5 +92,7 @@ const router = createRouter({
 //       next();
 //     }
 // });
+
+
 
 export default router
