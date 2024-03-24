@@ -15,6 +15,7 @@ Base = declarative_base()
 
 class BaseModel:
     """This is a Base Model class from which other classes will be derived from"""
+
     id = Column(String(60), nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
