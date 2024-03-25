@@ -4,7 +4,7 @@ Contains the class DBStorage
 """
 
 import models
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.customer import Customer
 from models.item import Item
 from models.restaurant import Restaurant
@@ -15,55 +15,59 @@ from models.cart_item import CartItem
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm.exc import NoResultFound
+from sqlalchemy.exc import InvalidRequestError
 import cloudinary
-from cloudinary.uploader import upload
 from dotenv import load_dotenv
 
+from typing import Union, Dict
 
-classes = {"Customer": Customer,
-            "Item": Item,
-            "Restaurant": Restaurant,
-            "Review": Review,
-            "Vendor": Vendor, 
-            "Order": Order,
-            "CartItem": CartItem
-            }
+
+classes = {
+    "Customer": Customer,
+    "Item": Item,
+    "Restaurant": Restaurant,
+    "Review": Review,
+    "Vendor": Vendor,
+    "Order": Order,
+    "CartItem": CartItem,
+}
+
 
 class DBStorage:
-    """ This class interacts with the MYSQL database """
+    """This class interacts with the MYSQL database"""
+
     __engine = None
     __session = None
-    
+
     def __init__(self):
         """Instantiate a DBStorage object"""
-        #RESTO_MYSQL_USER = getenv('RESTO_MYSQL_USER', 'root')
-        #RESTO_MYSQL_PWD = getenv('RESTO_MYSQL_PWD', 'root')
-        #RESTO_MYSQL_HOST = getenv('RESTO_MYSQL_HOST', 'localhost')
-        #RESTO_MYSQL_DB = getenv('RESTO_MYSQL_DB', 'restokonnect_db')
         load_dotenv()
-        RESTO_POSTGRES_DB = getenv('RESTO_POSTGRES_DB')
+        RESTO_POSTGRES_DB = getenv("RESTO_POSTGRES_DB")
         self.__engine = create_engine(RESTO_POSTGRES_DB)
-        
-        CLOUDINARY_CLOUD_NAME = getenv('CLOUDINARY_CLOUD_NAME')
-        CLOUDINARY_API_KEY = getenv('CLOUDINARY_API_KEY')
-        CLOUDINARY_API_SECRET = getenv('CLOUDINARY_API_SECRET')
+
+        CLOUDINARY_CLOUD_NAME = getenv("CLOUDINARY_CLOUD_NAME")
+        CLOUDINARY_API_KEY = getenv("CLOUDINARY_API_KEY")
+        CLOUDINARY_API_SECRET = getenv("CLOUDINARY_API_SECRET")
 
         cloudinary.config(
             cloud_name=CLOUDINARY_CLOUD_NAME,
             api_key=CLOUDINARY_API_KEY,
-            api_secret=CLOUDINARY_API_SECRET
+            api_secret=CLOUDINARY_API_SECRET,
         )
-    
-    def all(self, cls=None):
+
+    def all(
+        self, cls: Union[Customer, Item, CartItem, Restaurant, Vendor, Order, Review]
+    ) -> Dict:
         """query on the current database session"""
         new_dict = {}
         for clss in classes:
             if cls is None or cls is classes[clss] or cls is clss:
                 objs = self.__session.query(classes[clss]).all()
                 for obj in objs:
-                    key = obj.__class__.__name__ + '.' + obj.id
+                    key = obj.__class__.__name__ + "." + obj.id
                     new_dict[key] = obj
-        return (new_dict)
+        return new_dict
 
     def new(self, obj):
         """add the object to the current database session"""
@@ -98,8 +102,7 @@ class DBStorage:
             return None
 
         all_cls = models.storage.all(cls)
-        obj = next((value for value in
-                    all_cls.values() if value.id == id), None)
+        obj = next((value for value in all_cls.values() if value.id == id), None)
         return obj
 
     def count(self, cls=None):
@@ -111,3 +114,29 @@ class DBStorage:
             return len(models.storage.all())
         else:
             return len(models.storage.all(cls))
+
+    def find_user_by(
+        self, cls: Union[Customer, Vendor], **kwargs
+    ) -> Union[Customer, Vendor]:
+        """returns the first row found in the users table as
+        filtered by the method’s input arguments
+        """
+        if not kwargs:
+            raise (InvalidRequestError)
+        user = self.__session.query(cls).filter_by(**kwargs).first()
+        if not user:
+            raise (NoResultFound)
+        return user
+
+    def update_user(self, cls: Union[Customer, Vendor], cls_id: int, **kwargs) -> None:
+        """update the user’s attributes as passed in the method’s
+        arguments then commit changes to the database
+        """
+        user = self.find_user_by(cls, id=cls_id)
+
+        for key, value in kwargs.items():
+            if not hasattr(user, key):
+                raise ValueError
+            setattr(user, key, value)
+
+        self.__session.commit()
