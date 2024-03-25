@@ -38,7 +38,10 @@ def register_customer():
         customer = customer_auth.register_user(**form_request)
     except ValueError as error:
         return error_response(error)
-
+    otp = customer_auth.sends_otp(customer.phone_no)
+    if not otp:
+        return error_response("failed to send otp")
+    customer.otp = otp
     return make_response(jsonify(customer.to_dict()), 201)
 
 
@@ -53,28 +56,71 @@ def login_customer():
 
     if not form_request:
         return bad_request("Not form-data")
+
     if "phone_no" not in form_request:
-        return bad_request("Missing Phone Number")
+        return bad_request("phone_no missing")
 
     if not customer_auth.valid_login(phone_no):
         return unauthorized_error()
 
-    otp = customer_auth.generate_otp(phone_no)
-    if not otp:
-        return error_response(502, "Failed to generate otp")
-
-    access_token = customer_auth.create_session_token(phone_no)
+    otp = customer_auth.sends_otp(phone_no)
+    # if not otp:
+    #     return error_response(502, "Failed to generate otp")
 
     return (
         jsonify(
             {
                 "Phone_no": phone_no,
-                "access_token": access_token,
                 "OTP": otp,
-                "message": "logged in",
             }
         ),
         200,
+    )
+
+
+@app_views.route("/customers/send_otp", methods=["POST"], strict_slashes=False)
+def sends_otp():
+    """sends otp for verification"""
+    form_data = request.form
+
+    if not form_data:
+        error_response("Not form data")
+    if "phone_no" not in form_data:
+        bad_request("phone_no missing")
+
+    phone_no = form_data.get("phone_no")
+
+    otp = customer_auth.sends_otp(phone_no)
+
+    if not otp:
+        return error_response(502, "Failed to generate otp")
+    return make_response(jsonify({"otp": otp, "meassge": "OTP Successfully sent!"}))
+
+
+@app_views.route("/customers/verify_otp", methods=["POST"], strict_slashes=False)
+def verify_phone_no_otp():
+    """verify otp for a customers number"""
+
+    form_data = request.form
+
+    if not form_data:
+        error_response("Not form data")
+
+    required = ["otp", "phone_no"]
+    for data in required:
+        if data not in form_data:
+            bad_request("otp missing")
+
+    otp = form_data.get("otp")
+    phone_no = form_data.get("phone_no")
+
+    if not customer_auth.verify_otp(otp, phone_no):
+        return bad_request("Wrong opt")
+
+    access_token = customer_auth.create_session_token(phone_no)
+
+    return make_response(
+        jsonify({"message": "Phone Number Verified", "access_token": access_token})
     )
 
 

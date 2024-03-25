@@ -17,6 +17,8 @@ from vonage import Client, Sms
 
 BLACK_LIST_TOKEN = set()
 
+CURRENT_OTP = set()
+
 load_dotenv()
 key = getenv("KEY")
 secret = getenv("SECRET")
@@ -24,7 +26,7 @@ secret = getenv("SECRET")
 
 def _create_otp() -> str:
     """Creates OTP"""
-    otp = randrange(100000, 999999)
+    otp = str(randrange(100000, 999999))
     return otp
 
 
@@ -58,13 +60,9 @@ class CustomerAuth(Auth):
             if customer:
                 raise ValueError(f"Phone_no {customer.phone_no} already exists")
         except NoResultFound:
-            otp = self.generate_otp(phone_no)
-            if otp:
-                new_customer = Customer(**kwargs)
-                new_customer.OTP = otp
-                new_customer.save()
-                return new_customer
-            raise ValueError("Faild to generate otp")
+            new_customer = Customer(**kwargs)
+            new_customer.save()
+            return new_customer
 
     def valid_login(self, phone_no: str) -> bool:
         """validated a customer"""
@@ -84,9 +82,27 @@ class CustomerAuth(Auth):
         access_token = create_access_token(identity=user.phone_no)
         return access_token
 
-    def generate_otp(self, phone_no: str) -> Any:
-        """generates opt"""
+    def sends_otp(self, phone_no: str) -> Any:
+        """sends opt to customers phone number"""
         otp = _create_otp()
+        CURRENT_OTP.add(otp)
         if _send_otp(phone_no, otp):
             return otp
-        return None
+        # return None
+        return otp
+
+    def verify_otp(self, otp: str, phone_no: str) -> Any:
+        """verifies otp"""
+
+        try:
+            customer = storage.find_user_by(Customer, phone_no=phone_no)
+        except NoResultFound:
+            raise ValueError("Customer does not exist")
+
+        print(CURRENT_OTP)
+        if otp in CURRENT_OTP:
+            CURRENT_OTP.pop()
+            customer.phone_no_verify_status = True
+            customer.save()
+            return True
+        return False
