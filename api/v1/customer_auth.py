@@ -6,13 +6,13 @@ from typing import Union, Any
 from os import getenv
 from .auth import Auth
 from dotenv import load_dotenv
-from random import randrange
 from flask_jwt_extended import create_access_token
 from sqlalchemy.orm.exc import NoResultFound
 
 from models import storage
 from models.customer import Customer
 from vonage import Client, Sms
+import secrets
 
 
 BLACK_LIST_TOKEN = set()
@@ -26,7 +26,7 @@ secret = getenv("SECRET")
 
 def _create_otp() -> str:
     """Creates OTP"""
-    otp = str(randrange(100000, 999999))
+    otp = str(secrets.SystemRandom().randrange(100000, 999999))
     return otp
 
 

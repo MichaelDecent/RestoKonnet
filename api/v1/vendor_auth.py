@@ -14,7 +14,7 @@ from itsdangerous import URLSafeTimedSerializer, SignatureExpired
 from models import storage
 from models.vendor import Vendor
 from dotenv import load_dotenv
-from random import randrange
+import secrets
 
 load_dotenv()
 
@@ -31,7 +31,7 @@ def _hash_password(password: str) -> bytes:
 
 def _create_token() -> str:
     """Creates reset password token"""
-    reset_token = randrange(100000, 999999)
+    reset_token = secrets.SystemRandom().randrange(100000, 999999)
     return reset_token
 
 
