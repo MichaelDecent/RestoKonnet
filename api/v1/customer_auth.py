@@ -20,8 +20,8 @@ BLACK_LIST_TOKEN = set()
 CURRENT_OTP = set()
 
 load_dotenv()
-key = getenv("KEY")
-secret = getenv("SECRET")
+key = getenv("VONAGE_KEY")
+secret = getenv("VONAGE_SECRET")
 
 
 def _create_otp() -> str:

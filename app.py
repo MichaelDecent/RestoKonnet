@@ -7,9 +7,10 @@ from flask_jwt_extended import JWTManager
 from flask_swagger_ui import get_swaggerui_blueprint
 from api.v1.auth import BLACK_LIST_TOKEN
 from api.v1.vendor_auth import mail
+from config import Config
 
 app = Flask(__name__)
-app.config.from_pyfile("config.cfg")
+app.config.from_object(Config)
 
 mail.init_app(app)
 
