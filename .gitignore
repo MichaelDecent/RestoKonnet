@@ -4,8 +4,6 @@ venv
 
 .env
 
-alembic.ini
-
 .flake8
 
-config.cfg
+alembic/versions/

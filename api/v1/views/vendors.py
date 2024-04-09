@@ -2,13 +2,15 @@
 This Handles all the api Restful actions for Vendors
 """
 
-from flask import jsonify, request, make_response
+from flask import jsonify, request, make_response, redirect
 from api.v1.views import app_views
 from models.vendor import Vendor
 from models import storage
 from flask_jwt_extended import jwt_required, get_jwt
 from sqlalchemy.orm.exc import NoResultFound
 from api.v1.vendor_auth import VendorAuth
+from dotenv import load_dotenv
+from os import getenv
 from api.v1.errors import (
     error_response,
     forbidden_error,
@@ -18,6 +20,10 @@ from api.v1.errors import (
 )
 
 vendor_auth = VendorAuth()
+
+load_dotenv()
+FRONTEND_BASE_URL = getenv('FRONTEND_BASE_URL')
+
 
 
 @app_views.route("/vendors/register", methods=["POST"], strict_slashes=False)
@@ -105,11 +111,8 @@ def verify_vendor_email(token: str):
 
     if not vendor:
         return error_response("Email Verification token expired")
-
-    return make_response(
-        jsonify({"Email Veivification Status": vendor.email_verify_status}), 200
-    )
-
+    
+    return redirect(f'{FRONTEND_BASE_URL}vendors/{vendor.id}')
 
 @app_views.route("/vendors/logout", methods=["DELETE"], strict_slashes=False)
 @jwt_required()
