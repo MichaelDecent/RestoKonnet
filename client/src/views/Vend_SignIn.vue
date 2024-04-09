@@ -5,7 +5,7 @@
     import { useRouter } from "vue-router";
 
     const vendorEmail = ref("");
-    const vendorPassword = ref("")
+    const vendorPassword = ref("");
 
     const router = useRouter();
 
@@ -16,7 +16,7 @@
         formData.append('password', vendorPassword.value)
 
         try {
-            const response = await axios.post('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/vendor_login', formData);
+            const response = await axios.post('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/vendors/login', formData);
             localStorage.setItem('token', response.data.access_token);
             localStorage.setItem('vendor_id', response.data.id)
             localStorage.removeItem('customer_id');
@@ -32,7 +32,7 @@
 </script>
 
 <template>
-    <section class="bg-rgreen-100">
+    <section class="min-h-screen bg-rgreen-100">
         <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
                 <RouterLink to="/" class="flex pt-8 justify-center">
