@@ -22,8 +22,7 @@ from api.v1.errors import (
 vendor_auth = VendorAuth()
 
 load_dotenv()
-FRONTEND_BASE_URL = getenv('FRONTEND_BASE_URL')
-
+FRONTEND_BASE_URL = getenv("FRONTEND_BASE_URL")
 
 
 @app_views.route("/vendors/register", methods=["POST"], strict_slashes=False)
@@ -111,8 +110,9 @@ def verify_vendor_email(token: str):
 
     if not vendor:
         return error_response("Email Verification token expired")
-    
-    return redirect(f'{FRONTEND_BASE_URL}vendors/{vendor.id}')
+
+    return redirect(f"{FRONTEND_BASE_URL}vendors/{vendor.id}/")
+
 
 @app_views.route("/vendors/logout", methods=["DELETE"], strict_slashes=False)
 @jwt_required()
