@@ -1,33 +1,39 @@
 <script setup>
 import Logo from "../components/Logo.vue";
 import axios from "axios";
-import { ref } from "vue";
+import { ref, computed } from 'vue';
 import { useRouter } from "vue-router";
 
 
 const vendorSignUpData = ref({
-    name: '',
+    firstName: '',
+    lastName: '',
     phone_no: '',
     email: '',
     password: '',
+    confirmPassword: '',
     address: '',
 });
 
 const router = useRouter()
 
+const passwordsMatch = computed(() => vendorSignUpData.value.password === vendorSignUpData.value.confirmPassword);
+
 // submits a registarion form and creates a new customer
 const submitForm = async () => {
     try {
         const formData = new FormData();
-        formData.append('name', vendorSignUpData.value.name)
+        formData.append('first_name', vendorSignUpData.value.firstName)
+        formData.append('last_name', vendorSignUpData.value.lastName)
         formData.append('phone_no', vendorSignUpData.value.phone_no)
         formData.append('email', vendorSignUpData.value.email)
         formData.append('password', vendorSignUpData.value.password)
         formData.append('address', vendorSignUpData.value.address)
 
-        const response = await axios.post('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/vendors', formData);
-        console.log(response.data)
+        const response = await axios.post('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/vendors/register', formData);
+        alert("Account successfully created!")
         router.push('/vendorSignIn')
+        alert("Check Email for Verification link")
 
     } catch (error) {
         alert(error.response.data.message)
@@ -52,12 +58,12 @@ const submitForm = async () => {
                         <div class="grid gap-3 md:grid-cols-2">
                             <div>
                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900"> First Name </label>
-                                <input v-model="vendorSignUpData.first_name" type="text" name="first name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-ryellow focus:border-ryellow block w-full p-2.5" placeholder="Enter your name" required>
+                                <input v-model="vendorSignUpData.firstName" type="text" name="first name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-ryellow focus:border-ryellow block w-full p-2.5" placeholder="Enter your name" required>
 
                             </div>
                             <div>
                                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900"> Last Name </label>
-                                <input v-model="vendorSignUpData.last_name" type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-ryellow focus:border-ryellow block w-full p-2.5" placeholder="Enter your name" required>
+                                <input v-model="vendorSignUpData.lastName" type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-ryellow focus:border-ryellow block w-full p-2.5" placeholder="Enter your name" required>
 
                             </div>
                         </div>
@@ -87,11 +93,12 @@ const submitForm = async () => {
                                 placeholder="********" required>
                         </div>
                         <div>
-                            <label for="password" class="block mb-2 text-sm font-medium text-gray-900">Confirm Password</label>
-                            <input v-model="vendorSignUpData.password" type="password" name="password" id="password"
+                            <label for="confirmPassword" class="block mb-2 text-sm font-medium text-gray-900">Confirm Password</label>
+                            <input v-model="vendorSignUpData.confirmPassword" type="password" name="confirmPassword" id="confirmPassword"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-ryellow focus:border-ryellow block w-full p-2.5"
                                 placeholder="********" required>
                         </div>
+                        <p v-if="!passwordsMatch" class="text-red-500">Passwords do not match</p>
                         <div class="flex items-start">
                             <div class="flex items-center h-5">
                                 <input id="terms" aria-describedby="terms" type="checkbox"
