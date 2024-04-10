@@ -68,13 +68,19 @@ def vendor_login():
     if not vendor_auth.valid_login(Vendor, email, password):
         return unauthorized_error("Invalid Credentials")
 
-    user = storage.find_user_by(Vendor, email=email)
-    if user.email_verify_status is False:
+    vendor = storage.find_user_by(Vendor, email=email)
+    if vendor.email_verify_status is False:
         return unauthorized_error("Email not Verified")
 
     access_token = vendor_auth.create_session_token(Vendor, email)
     return (
-        jsonify({"email": email, "access_token": access_token, "message": "logged in"}),
+        jsonify(
+            {
+                "vendor": vendor.to_dict(),
+                "access_token": access_token,
+                "message": "logged in",
+            }
+        ),
         200,
     )
 
@@ -111,7 +117,7 @@ def verify_vendor_email(token: str):
     if not vendor:
         return error_response("Email Verification token expired")
 
-    return redirect(f"{FRONTEND_BASE_URL}vendors/{vendor.id}/")
+    return redirect(f"{FRONTEND_BASE_URL}vendorSignIn")
 
 
 @app_views.route("/vendors/logout", methods=["DELETE"], strict_slashes=False)
