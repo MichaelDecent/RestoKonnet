@@ -1,80 +1,114 @@
 <script setup>
-    import Restaurant from "../components/Restaurants.vue";
-    import Logo2 from "../components/Logo2.vue"
+    import RestoNav from "../components/RestoNav.vue"
     import Footer2 from "../components/Footer2.vue"
-    import { useRouter, useRoute } from "vue-router";
-    import { ref, onMounted } from "vue"
+    import Cust_SignIn from "./Cust_SignIn.vue";
+    import { onMounted, ref } from "vue";
+    import { useAuthStore  } from "../stores/AuthStore";
     import axios from "axios";
+    import { useRoute } from 'vue-router';
 
-    const router = useRouter()
-    const route = useRoute()
-    const currentPath = ref("")
-    const vendorData = ref({})
+    const authStore = useAuthStore();
 
-    currentPath.value = route.path
 
-    //gets the route to Dashboard Page
-    const dashboardRoute = () => {
-        router.push(`${route.path}/restaurants`)
+    const restaurant = ref({});
+    const items = ref([]);
+    const vendorId = ref("")
+    const route = useRoute();
+    const currentPath = ref('');
+    const baseUrl = ref('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1')
+    const currentUser = ref(authStore.currentUser)
+
+    vendorId.value = localStorage.getItem('vendor_id')
+    currentPath.value = route.path;    
+
+
+    // retrieves a details of a particular restaurant
+    const get_restaurants = async () => {
+    try {
+        // const token = localStorage.getItem('token');
+        // const headers = { 'Authorization': `Bearer ${token}` };
+
+        // Use axios.get to make a GET request
+        const response = await axios.get(`${baseUrl.value}/${currentPath.value}/restaurants`);
+        restaurant.value = response.data
+        
+        } catch (error) {
+            console.error(error);
+        }
     }
 
-    // get vendors data
-    const getVendorData = async () => {
-        try {
-            const response = await axios.get(`https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1${currentPath.value}`)
-            vendorData.value = response.data
-        } catch(error) {
-            alert(error)
+    // retrives all customers item
+    const get_items = async () => {
+    try {
+        // const token = localStorage.getItem('token');
+        // const headers = { 'Authorization': `Bearer ${token}` };
+
+        // Use axios.get to make a GET request
+        const response = await axios.get(`${baseUrl.value}/${currentPath.value}/items`);
+        items.value = response.data
+        
+        } catch (error) {
+            console.error(error);
         }
-    };
+    }
 
-    onMounted(() => {
-        getVendorData()
+
+    onMounted( () => {
+        currentPath.value = route.path;
+        get_restaurants() 
+        get_items()
     });
-
+    
 </script>
 
 <template>
-    <section class="">
+    <div v-if="authStore.isAuthenticated">
         <div class="bg-rgreen-100 border">
-            <div class="flex flex-col md:flex-row justify-between items-center lg:mx-60 my-20">
-                <div>
-                    <Logo2/>
+            <RestoNav :user="currentUser" />
+        </div>
+        <div class="flex flex-wrap justify-center  lg:justify-between md:mx-auto max-w-screen-xl p-4">
+            <div class="lg:w-1/2" >
+                <div class="w-96 h-96 lg:h-96 lg:w-full rounded-lg overflow-hidden mt-5 shadow-lg hover:shadow-2xl">
+                    <img class="w-full h-full" :src="restaurant.image" alt="Card Image">
                 </div>
-                <div class="flex gap-10 items-center">
-                    <button @click="dashboardRoute()" class="text-white hover:text-ryellow transition duration-300 ease-in-out relative group text-lg md:text-2xl font-semibold">
-                        Dashboard
-                        <div class="absolute w-full h-1 bg-ryellow bottom-0 left-0 transform scale-x-0 transition-transform origin-left group-hover:scale-x-100 duration-300 ease-in-out"></div>
-                    </button>
-                    <button>
-                        <img src="../img/icons/Ellipse 4.png" alt="">
-                    </button>
-                    <button>
-                        <img class="pb-2" src="../img/icons/garden_cart.png" alt="">
-                    </button>
+                <div class="px-2 py-4 bg-white">
+                    <h1 class="font-extrabold lg:text-4xl mb-2 w-auto mt-3">{{ restaurant.name}}</h1>
+                    <p class="text-xl text-gray-600">{{ restaurant.address }}</p>
                 </div>
             </div>
-            <div class="my-24">
-                <div class="flex justify-center mb-5">
-                    <p class="text-4xl text-white font-extrabold break-words">Welcome! {{ vendorData.name }}</p>
-                </div>
-                <div class="flex justify-center">
-                    <div class="flex gap-2 bg-white p-3 rounded-3xl w-96">
-                        <button>
-                            <img src="../img/icons/search.png" alt="">
-                        </button>
-                        <input type="text" name="search" id="search" class="p-1" placeholder="search">
-                    </div>
-                </div>
-            </div>     
         </div>
-        <div class="lg:mx-60 my-5 mx-5">
-            <h2 class="text-rgreen-100 text-2xl lg:text-4xl font-poppins font-semibold break-words">Explore Restaurants</h2>
-            <Restaurant/>
-           
-        </div>
-        <div class="bg-rgreen-100 border" >
+        <section class="bg-white py-12 text-gray-700 sm:py-16 lg:py-20">
+            <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-md text-center">
+                    <h2 class="font-serif text-2xl font-bold sm:text-3xl">Available Delicacies</h2>
+                </div>
+
+                <div class="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-4 lg:mt-16">
+      
+                    <article v-for="item in items" class="relative flex flex-col overflow-hidden rounded-lg border">
+                        <div class="aspect-square overflow-hidden">
+                            <img class="h-full w-full object-cover transition-all duration-300 group-hover:scale-125" :src="item.image" alt="item image" />
+                        </div>
+                        <div class="my-4 mx-auto flex w-10/12 flex-col items-start justify-between">
+                            <div class="mb-2 flex">
+                                <p class="mr-3 text-sm font-semibold">{{ item.price }}</p>
+                            </div>
+                            <h3 class="mb-2 text-sm text-gray-400">{{ item.name }}</h3>
+                        </div>
+                        <button @click="add_to_cart(item.name, item.price)" class="group mx-auto mb-2 flex h-10 w-10/12 items-stretch overflow-hidden rounded-md text-gray-600">
+                            <div class="flex w-full items-center justify-center bg-gray-100 text-xs uppercase transition group-hover:bg-ryellow group-hover:text-white">Add</div>
+                            <div class="flex items-center justify-center bg-gray-200 px-5 transition group-hover:bg-yellow-600 group-hover:text-white">+</div>
+                        </button> 
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <div class="bg-rgreen-100 border">
             <Footer2/>
         </div>
-    </section>
-</template>
+    </div>
+    <div v-else="authStore.isAuthenticated">
+        <Cust_SignIn/>
+    </div>
+</template>cd 
