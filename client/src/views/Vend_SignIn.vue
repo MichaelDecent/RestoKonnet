@@ -17,14 +17,19 @@
 
         try {
             const response = await axios.post('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/vendors/login', formData);
+
             localStorage.setItem('token', response.data.access_token);
             localStorage.setItem('vendor_id', response.data.id)
             localStorage.removeItem('customer_id');
-            const id = response.data.id
-            router.push(`/vendors/${id}`)
+            const id = response.data.vendor.id
+            console.log(response.data.vendor.id)
+            router.push(`vendors/${id}`)
 
         } catch (error) {
-            alert(error.response.data.message)
+            alert(error.response.message)
+            // if (error.response.data.message === "Email not Verified") {
+            //     router.push('/vendors/verify_email')
+            // }
             console.log("Login Failed:", error)
         }
     }
