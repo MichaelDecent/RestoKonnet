@@ -1,5 +1,6 @@
 <script setup>
     import Logo from "../components/Logo.vue"
+    import Back from "../components/Back.vue";
     import axios from "axios";
     import { onMounted, ref } from "vue";
     import { useRoute } from "vue-router";
@@ -25,7 +26,6 @@
             restaurant.value = result.data
 
         } catch(error) {
-            alert("No Restaurant Available\n\nCreate a New Resaturant")
             console.log(error)
         }
     }
@@ -37,7 +37,6 @@
             alert("Restaurant Deleted Successfully!")
 
         } catch(error) {
-            alert("No Resatuarant Exist")
             console.log(error)
         }
     }
@@ -66,7 +65,6 @@
             alert("upload successful")
 
         } catch (error) {
-            alert(error)
             console.error('Upload Failed:', error);
         }
     };
@@ -108,7 +106,6 @@
             alert("update successful")
 
         } catch (error) {
-            alert(error)
             console.error('Update Failed:', error);
         }
     };
@@ -122,7 +119,6 @@
             alert("update successful")
 
         } catch (error) {
-            alert(error)
             console.error('Update Failed:', error);
         }
     };
@@ -137,7 +133,6 @@
             alert("update successful")
 
         } catch (error) {
-            alert(error)
             console.error('Update Failed:', error);
         }
     };
@@ -150,7 +145,6 @@
             restoItems.value = response.data
 
         } catch (error) {
-            alert("No Item Available")
             console.error('Failed to get items:', error);
         }
     };
@@ -183,7 +177,6 @@
 
 
         } catch (error) {
-            alert(error)
             console.error('Update Failed:', error);
         }
     };
@@ -199,7 +192,6 @@
             getRestoItems();
 
         } catch (error) {
-            alert(error)
             console.error('Update Failed:', error);
         }
     };
@@ -224,7 +216,6 @@
             orders.value = response.data
         } catch(error) {
             console.log(error)
-            alert(error)
         }
     }
 
@@ -236,7 +227,6 @@
 
         } catch(error) {
             console.log(error)
-            alert(error)
         }
     }
 
@@ -250,6 +240,9 @@
 
 <template>
     <section class="bg-[#F2FCF2] lg:p-16 p-2">
+        <div>
+            <Back/>
+        </div>
         <div>
             <Logo/>
         </div>
