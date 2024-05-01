@@ -26,7 +26,7 @@
             router.push(`vendors/${id}`)
 
         } catch (error) {
-            alert(error)
+            alert(error.response.data.message)
             // if (error.response.data.message === "Email not Verified") {
             //     router.push('/vendors/verify_email')
             // }
