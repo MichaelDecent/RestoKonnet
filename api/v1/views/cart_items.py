@@ -50,7 +50,7 @@ def get_cart_item(restaurant_id):
         else:
             return not_found("vendor does not exist")
     else:
-        bad_request("NO vendor_id or customer_id")
+        bad_request("No vendor_id or customer_id")
 
     return cart_items
 
@@ -95,7 +95,7 @@ def put_cart_item(cart_item_id):
 
     for key, value in form_request.items():
         if key not in ignore_list:
-            setattr(order, key, value)
+            setattr(cart_item, key, value)
 
     storage.save()
     return make_response(jsonify(cart_item.to_dict()), 201)

@@ -20,7 +20,6 @@
 
             localStorage.setItem('token', response.data.access_token);
             localStorage.setItem('vendor_id', response.data.id)
-            localStorage.removeItem('customer_id');
             const id = response.data.vendor.id
             console.log(response.data.vendor.id)
             router.push(`vendors/${id}`)
@@ -65,11 +64,14 @@
                                     <label for="remember" class="text-gray-500">Remember me</label>
                                 </div>
                             </div>
-                            <a href="#" class="text-sm font-medium text-primary-600 hover:underline">Forgot password?</a>
+                            <RouterLink to="/ResetPassword" class="text-sm font-medium text-primary-600 hover:underline">Forgot password?</RouterLink>
                         </div>
                         <button type="submit" class="w-full text-white bg-rgreen-100 hover:bg-ryellow font-semibold rounded-lg lg:text-lg px-5 py-2.5 text-center">Sign in</button>
-                        <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                            Don’t have an account yet? <RouterLink to="/vendorSignUp" class="font-medium text-rgreen-100 hover:underline hover:text-ryellow">Sign up</RouterLink>
+                        <p class="text-sm font-light text-gray-600">
+                            Don’t have an account yet? 
+                            <RouterLink to="/vendorSignUp" class="font-medium text-rgreen-100 hover:underline hover:text-ryellow">
+                                Sign up >
+                            </RouterLink>
                         </p>
                     </form>
                 </div>

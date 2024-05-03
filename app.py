@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 from models import storage
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from api.v1.views import app_views
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
@@ -8,6 +8,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from api.v1.auth import BLACK_LIST_TOKEN
 from api.v1.vendor_auth import mail
 from config import Config
+from api.v1.auth import Auth
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -49,4 +50,4 @@ def close_db(error):
 
 
 if __name__ == ("__main__"):
-    app.run(host="0.0.0.0", port=5001, threaded=True)
+    app.run(host="0.0.0.0", port=5001, threaded=True, debug=True)

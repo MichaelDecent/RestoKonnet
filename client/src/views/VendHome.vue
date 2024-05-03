@@ -46,9 +46,6 @@ const get_restaurants = async () => {
 // retrieves all customers item
 const get_items = async () => {
     try {
-        // const token = localStorage.getItem('token');
-        // const headers = { 'Authorization': `Bearer ${token}` };
-
         // Use axios.get to make a GET request
         const response = await axios.get(`${baseUrl.value}/restaurants/${restaurant.value.id}/items`);
         items.value = response.data
@@ -56,6 +53,22 @@ const get_items = async () => {
         console.error(error);
     }
 }
+
+const vendor_logout = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const headers = { 'Authorization': `Bearer ${token}` };
+
+        // Use axios.delete to make a DELETE request
+        const response = await axios.delete(`${baseUrl.value}/vendors/logout`, { headers });
+        router.push("/");
+    }
+    catch (error) {
+        console.error(error);
+        alert("Failed to logout");
+    }
+}
+
 
 const routeToDashboard = () => {
     router.push(`${currentPath.value}/restaurants`)
@@ -94,7 +107,7 @@ onMounted(() => {
 
                             <li
                                 class="cursor-pointer px-3 py-2 text-sm text-gray-500 hover:bg-ryellow hover:text-white">
-                                <button @click.prevent="_logout()">Logout</button>
+                                <button @click.prevent="vendor_logout()">Logout</button>
                             </li>
                         </ul>
                     </li>

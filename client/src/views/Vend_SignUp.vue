@@ -32,8 +32,7 @@ const submitForm = async () => {
 
         const response = await axios.post('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/vendors/register', formData);
         alert("Account successfully created!")
-        router.push('/vendorSignIn')
-        alert("Check Email for Verification link")
+        router.push('/VerifyEmail')
 
     } catch (error) {
         alert(error.response.data.message)
@@ -113,9 +112,9 @@ const submitForm = async () => {
                         <button type="submit"
                             class="w-full text-white bg-rgreen-100 hover:bg-ryellow focus:ring-4 focus:outline-none focus:ring-ryellow font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create
                             an account</button>
-                        <p class="text-sm font-light text-gray-500">
+                        <p class="text-sm font-light text-gray-600">
                             Already have an account? <RouterLink to="/vendorSignIn"
-                                class="font-medium text-rgreen-100 hover:underline hover:text-ryellow">Login here
+                                class="font-medium text-rgreen-100 hover:underline hover:text-ryellow">Login here >
                             </RouterLink>
                         </p>
                     </form>
