@@ -4,15 +4,24 @@ This Module handles authtentication functions
 """
 from typing import Union
 from uuid import uuid4
-
+import jwt
 import bcrypt
 from flask_jwt_extended import create_access_token
 from sqlalchemy.orm.exc import NoResultFound
+from flask import request, jsonify
+from functools import wraps
+from os import getenv
 
 from models import storage
 from models.vendor import Vendor
 
 BLACK_LIST_TOKEN = set()
+EXEMPT_ENDPOINTS = [
+    "api/v1/customers/register",
+    "/register",
+]
+
+SECRET_KEY = getenv("SECRET_KEY")
 
 
 def _hash_password(password: str) -> bytes:
@@ -96,3 +105,33 @@ class Auth:
         storage.update_user(
             cls, user.id, hashed_password=hashed_password, reset_token=None
         )
+
+    @staticmethod
+    def token_required(func):
+        print(" Testing")
+
+        @wraps(func)
+        def decorated(*args, **kwargs):
+            token = None
+
+            if "Authorization" in request.headers:
+                token = request.headers["Authorization"].split(" ")[1]
+
+            if not token:
+                return jsonify({"message": "Token is missing!"}), 401
+
+            if request.endpoint in EXEMPT_ENDPOINTS:
+                return func(*args, **kwargs)
+            else:
+                try:
+                    data = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+                    # You can access the user data from the decoded token
+                    # current_user = data['user']
+                except jwt.ExpiredSignatureError:
+                    return jsonify({"message": "Token has expired!"}), 401
+                except jwt.InvalidTokenError:
+                    return jsonify({"message": "Invalid token!"}), 401
+
+                return func(*args, **kwargs)
+
+        return decorated

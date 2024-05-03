@@ -129,7 +129,7 @@ def logout_vendor() -> str:
         vendor_auth.destroy_session(access_token)
         return make_response(jsonify({"message": "successfully loggeout"}), 200)
     else:
-        return forbidden_error()
+        return unauthorized_error()
 
 
 @app_views.route("/vendors/reset_password", methods=["POST"], strict_slashes=False)

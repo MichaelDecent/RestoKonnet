@@ -125,7 +125,6 @@ def verify_phone_no_otp():
 
 
 @app_views.route("/customers/logout", methods=["DELETE"], strict_slashes=False)
-@jwt_required()
 def logout_customer() -> str:
     """logs the user out"""
     access_token = get_jwt()["jti"]
@@ -138,7 +137,6 @@ def logout_customer() -> str:
 
 
 @app_views.route("/customers", methods=["GET"], strict_slashes=False)
-@jwt_required()
 def get_customers():
     """
     This retrieves a list all customers
