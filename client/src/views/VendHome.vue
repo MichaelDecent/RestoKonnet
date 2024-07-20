@@ -81,7 +81,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div v-if="authStore.isAuthenticated">
+    <!-- <div v-if="authStore.isAuthenticated"> -->
         <div class="bg-rgreen-100 border">
             <!-- <RestoNav :user="currentUser" /> -->
             <div class="flex md:flex-row justify-between items-center md:mx-auto max-w-screen-xl p-4">
@@ -206,8 +206,8 @@ onMounted(() => {
         <div class="bg-rgreen-100 border">
             <Footer2 />
         </div>
-    </div>
-    <div v-else="authStore.isAuthenticated">
+    <!-- </div> -->
+    <!-- <div v-else="authStore.isAuthenticated">
         <Cust_SignIn />
-    </div>
+    </div> -->
 </template>

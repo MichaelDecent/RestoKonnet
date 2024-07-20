@@ -7,34 +7,34 @@
     const custPhone_no = ref("");
     const router = useRouter();
 
-    const authStore = useAuthStore()
+    // const authStore = useAuthStore()
 
-    const login_customer = async () => {
-        const response = await authStore.login_customer(custPhone_no.value)
-        router.push(`/customers/${response.id}`)
-    }
+    // const login_customer = async () => {
+    //     const response = await authStore.login_customer(custPhone_no.value)
+    //     router.push(`/customers/${response.id}`)
+    // }
 
     
     // submit customer details to sign in
 
 
-    // const submitForm = async () => {
-    //     const formData = new FormData()
-    //     formData.append('phone_no', custPhone_no.value)
+    const submitForm = async () => {
+        const formData = new FormData()
+        formData.append('phone_no', custPhone_no.value)
 
-    //     try {
-    //         const response = await axios.post('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/customer_login', formData);
-    //         localStorage.setItem('token', response.data.access_token);
-    //         localStorage.setItem('customer_id', response.data.id)
-    //         localStorage.removeItem('vendor_id');
-    //         const id = response.data.id
-    //         router.push(`/customers/${id}`)
+        try {
+            const response = await axios.post('https://restokonnectapi-8d0b7b86e6bb.herokuapp.com/api/v1/customer_login', formData);
+            localStorage.setItem('token', response.data.access_token);
+            localStorage.setItem('customer_id', response.data.id)
+            localStorage.removeItem('vendor_id');
+            const id = response.data.id
+            router.push(`/customers/${id}`)
 
-    //     } catch (error) {
-    //         alert(error.response.data.message)
-    //         console.log("Login Failed:", error)
-    //     }
-    // }
+        } catch (error) {
+            alert(error.response.data.message)
+            console.log("Login Failed:", error)
+        }
+    }
 
 </script>
 
